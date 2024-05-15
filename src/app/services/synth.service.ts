@@ -7,7 +7,7 @@ export type Effect =
   | Tone.Chorus
   | Tone.Reverb;
 
-export type EffectName = 'Distortion' | 'FeedbackDelay' | 'Reverb';
+export type EffectName = 'Distortion' | 'FeedbackDelay' | 'Reverb' | 'Chorus';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +18,7 @@ export class SynthService {
   delay = new Tone.FeedbackDelay();
   distortion = new Tone.Distortion(1);
   reverb = new Tone.Reverb();
+  chorus = new Tone.Chorus();
 
   constructor() {
     this.synth.chain(
@@ -47,6 +48,9 @@ export class SynthService {
       case 'Reverb':
         this.reverb.wet.value = 0;
         break;
+      case 'Chorus':
+        this.chorus.wet.value = 0;
+        break;
       default:
         console.log('error');
     }
@@ -62,6 +66,9 @@ export class SynthService {
         break;
       case 'Reverb':
         this.reverb.wet.value = 1;
+        break;
+      case 'Chorus':
+        this.chorus.wet.value = 1;
         break;
       default:
         console.log('error');

@@ -2,27 +2,28 @@
     <p class="text-white text-center">Effects</p>
     <div class="flex justify-center">
 
-        <div class="p-2 mr-2 bg-red-400">
-            <button class="p-2 bg-neutral-200"
-                    (click)="toggleDist()">distortion</button>
-            <div class="w-2 h-2 rounded-full"
-                 [ngClass]="distortionOn? 'bg-red-800': 'bg-neutral-200'"></div>
-        </div>
+
+        <effect-box [effectType]="'Distortion'"
+                    [config]="{}"
+                    (toggle)="toggleEffect($event)"></effect-box>
 
 
-        <div class="p-2 mr-2 bg-yellow-400">
-            <button class="p-2 bg-neutral-200"
-                    (click)="toggleDelay()">delay</button>
-            <div class="w-2 h-2 rounded-full"
-                 [ngClass]="delayOn? 'bg-red-800': 'bg-neutral-200'"></div>
-        </div>
+        <effect-box [effectType]="'FeedbackDelay'"
+                    [config]="{}"
+                    (toggle)="toggleEffect($event)"></effect-box>
 
-        <div class="p-2 mr-2 bg-yellow-400">
-            <button class="p-2 bg-neutral-200"
-                    (click)="toggleReverb()">reverb</button>
-            <div class="w-2 h-2 rounded-full"
-                 [ngClass]="reverbOn? 'bg-red-800': 'bg-neutral-200'"></div>
-        </div>
+
+
+        <effect-box [effectType]="'Reverb'"
+                    [config]="{}"
+                    (toggle)="toggleEffect($event)"></effect-box>
+
+
+
+        <effect-box [effectType]="'Chorus'"
+                    [config]="{}"
+                    (toggle)="toggleEffect($event)"></effect-box>
+
 
 
     </div>
