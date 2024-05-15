@@ -12,11 +12,10 @@ import { SynthService } from '../../services/synth.service';
 export class SynthViewComponent {
   synthSvc = inject(SynthService);
 
-  onHoldNote(note: string) {
-    this.synthSvc.holdNote(note);
+  onHoldNote(event: string) {
+    this.synthSvc.holdNote(event);
   }
   onReleaseNote() {
     this.synthSvc.releaseNote();
-    // this.noteDown = false;
   }
 }

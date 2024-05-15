@@ -1,4 +1,4 @@
-<div class="bg-neutral-600">
+<div class="bg-neutral-600 p-2">
     <div>
         octave: {{octave}}
         <input (input)="changeOctave(+octaveIput.value)"
@@ -9,9 +9,8 @@
                max="6"
                #octaveIput>
 
-        <button class="p-2 bg-neutral-200"
-                (click)="toggleDelay()">delay {{delayOn}}</button>
     </div>
+
     @for (key of keys; track key) {
     <button class="bg-slate-200 p-2 m-2"
             (mousedown)="holdNote(key)"

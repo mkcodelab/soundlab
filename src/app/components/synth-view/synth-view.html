@@ -3,4 +3,5 @@
 <div>
     <fx-board></fx-board>
 </div>
-<keyboard></keyboard>
+<keyboard (holdNoteEmitter)="onHoldNote($event)"
+          (releaseNoteEmitter)="onReleaseNote()"></keyboard>

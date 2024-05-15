@@ -1,4 +1,10 @@
-import { Component, EventEmitter, HostListener, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Output,
+  inject,
+} from '@angular/core';
 import { SynthService } from '../../../services/synth.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -17,8 +23,8 @@ export class KeyboardComponent {
   octave = 1;
   octave$ = new BehaviorSubject(1);
 
-  holdNoteEmitter = new EventEmitter();
-  releaseNoteEmitter = new EventEmitter();
+  @Output() holdNoteEmitter = new EventEmitter();
+  @Output() releaseNoteEmitter = new EventEmitter();
 
   ngOnInit() {
     this.createKeys();
@@ -72,24 +78,18 @@ export class KeyboardComponent {
   }
   @HostListener('window:keyup', ['$event'])
   keyUpEvent(event: KeyboardEvent) {
-    // console.log('released', event.key);
     this.releaseNote();
   }
 
-  //   playNote(note: string) {
-  //     this.synthSvc.playSound(note);
-  //   }
-
   holdNote(note: string) {
-    this.synthSvc.holdNote(note);
+    this.holdNoteEmitter.emit(note);
   }
   releaseNote() {
-    this.synthSvc.releaseNote();
+    this.releaseNoteEmitter.emit();
     this.noteDown = false;
   }
 
   changeOctave(value: number) {
-    // this.octave = value;
     this.octave$.next(value);
   }
 
@@ -106,14 +106,6 @@ export class KeyboardComponent {
   refreshKeys() {
     this.keys = [];
     this.createKeys();
-  }
-
-  toggleDelay() {
-    this.delayOn = !this.delayOn;
-
-    this.delayOn
-      ? this.synthSvc.connectDelay()
-      : this.synthSvc.disconnectDelay();
   }
 
   ngOnDestroy() {
