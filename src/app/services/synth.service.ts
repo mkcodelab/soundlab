@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as Tone from 'tone';
-import { Effect } from './fx-board.service';
+
+export type Effect =
+  | Tone.FeedbackDelay
+  | Tone.Distortion
+  | Tone.Chorus
+  | Tone.Reverb;
+
+export type EffectName = 'Distortion' | 'FeedbackDelay' | 'Reverb';
 
 @Injectable({
   providedIn: 'root',
@@ -8,52 +15,56 @@ import { Effect } from './fx-board.service';
 export class SynthService {
   synth = new Tone.Synth();
 
-  // delay = new Tone.FeedbackDelay();
-  // distortion = new Tone.Distortion(1);
-
-  fxArray: Effect[] = [];
+  delay = new Tone.FeedbackDelay();
+  distortion = new Tone.Distortion(1);
+  reverb = new Tone.Reverb();
 
   constructor() {
-    // this.addEffectToChain(this.distortion);
-    // this.addEffectToChain(this.delay);
-    this.connectFXChain();
+    this.synth.chain(
+      this.distortion,
+      this.delay,
+      this.reverb,
+      Tone.getDestination()
+    );
   }
 
   holdNote(note: string) {
-    this.synth.triggerAttack(note);
+    this.synth.triggerAttack(note, Tone.getContext().currentTime);
   }
 
   releaseNote() {
     this.synth.triggerRelease();
   }
 
-  //   connectDelay() {
-  //     this.synth.connect(this.delay);
-  //     this.delay.toDestination();
-  //   }
-
-  //   disconnectDelay() {
-  //     this.synth.disconnect(this.delay);
-  //     this.synth.toDestination();
-  //   }
-
-  connectFXChain() {
-    console.log('connected: ', this.fxArray);
-    this.synth.chain(...this.fxArray, Tone.getDestination());
+  turnOff(effectName: EffectName) {
+    switch (effectName) {
+      case 'Distortion':
+        this.distortion.wet.value = 0;
+        break;
+      case 'FeedbackDelay':
+        this.delay.wet.value = 0;
+        break;
+      case 'Reverb':
+        this.reverb.wet.value = 0;
+        break;
+      default:
+        console.log('error');
+    }
   }
 
-  clearFxChain() {
-    this.fxArray = [];
-    // this.synth.chain(Tone.getDestination());
-    this.synth.disconnect();
-    this.synth.toDestination();
-  }
-
-  addEffectToChain(effect: any) {
-    this.fxArray.push(effect);
-  }
-
-  removeEffectFromChain(effect: any) {
-    console.log(effect);
+  turnOn(effectName: EffectName) {
+    switch (effectName) {
+      case 'Distortion':
+        this.distortion.wet.value = 1;
+        break;
+      case 'FeedbackDelay':
+        this.delay.wet.value = 1;
+        break;
+      case 'Reverb':
+        this.reverb.wet.value = 1;
+        break;
+      default:
+        console.log('error');
+    }
   }
 }

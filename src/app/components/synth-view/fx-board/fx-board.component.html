@@ -4,10 +4,7 @@
 
         <div class="p-2 mr-2 bg-red-400">
             <button class="p-2 bg-neutral-200"
-                    (click)="toggleDist()">
-                distortion
-
-            </button>
+                    (click)="toggleDist()">distortion</button>
             <div class="w-2 h-2 rounded-full"
                  [ngClass]="distortionOn? 'bg-red-800': 'bg-neutral-200'"></div>
         </div>
@@ -15,20 +12,18 @@
 
         <div class="p-2 mr-2 bg-yellow-400">
             <button class="p-2 bg-neutral-200"
-                    (click)="toggleDelay()">
-                delay
-
-            </button>
+                    (click)="toggleDelay()">delay</button>
             <div class="w-2 h-2 rounded-full"
                  [ngClass]="delayOn? 'bg-red-800': 'bg-neutral-200'"></div>
         </div>
 
-
-
-        <div>
-            <button class="p-2"
-                    (click)="removeEffects()">remove effects</button>
+        <div class="p-2 mr-2 bg-yellow-400">
+            <button class="p-2 bg-neutral-200"
+                    (click)="toggleReverb()">reverb</button>
+            <div class="w-2 h-2 rounded-full"
+                 [ngClass]="reverbOn? 'bg-red-800': 'bg-neutral-200'"></div>
         </div>
+
 
     </div>
 </div>

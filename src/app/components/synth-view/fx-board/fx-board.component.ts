@@ -1,7 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { SynthService } from '../../../services/synth.service';
-import { FxBoardService } from '../../../services/fx-board.service';
 import { NgClass } from '@angular/common';
+
+interface EffectStates {
+  delayActive: boolean;
+  distortionActive: boolean;
+  reverbActive: boolean;
+}
 
 @Component({
   selector: 'fx-board',
@@ -12,29 +17,41 @@ import { NgClass } from '@angular/common';
 })
 export class FxBoardComponent {
   synthSvc = inject(SynthService);
-  fxBoardSvc = inject(FxBoardService);
+
+  effectStates: EffectStates = {
+    delayActive: true,
+    distortionActive: true,
+    reverbActive: true,
+  };
 
   delayOn = true;
   distortionOn = true;
+  reverbOn = true;
 
   toggleDelay() {
     this.delayOn = !this.delayOn;
 
     this.delayOn
-      ? this.fxBoardSvc.addEffect('FeedbackDelay')
-      : this.fxBoardSvc.removeEffect('FeedbackDelay');
+      ? this.synthSvc.turnOn('FeedbackDelay')
+      : this.synthSvc.turnOff('FeedbackDelay');
   }
 
   toggleDist() {
     this.distortionOn = !this.distortionOn;
+
     this.distortionOn
-      ? this.fxBoardSvc.addEffect('Distortion')
-      : this.fxBoardSvc.removeEffect('Distortion');
+      ? this.synthSvc.turnOn('Distortion')
+      : this.synthSvc.turnOff('Distortion');
   }
 
-  removeEffects() {
-    this.synthSvc.clearFxChain();
-    this.distortionOn = false;
-    this.delayOn = false;
+  toggleReverb() {
+    this.reverbOn = !this.reverbOn;
+    this.reverbOn
+      ? this.synthSvc.turnOn('Reverb')
+      : this.synthSvc.turnOff('Reverb');
   }
+
+  //   toggleEffect(state: EffectStates) {
+  //     state.value = !state
+  //   }
 }

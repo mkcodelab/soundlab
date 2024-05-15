@@ -8,9 +8,6 @@ import {
 import { SynthService } from '../../../services/synth.service';
 import { BehaviorSubject } from 'rxjs';
 
-// interface keys = {
-
-// }
 @Component({
   standalone: true,
   imports: [],
@@ -60,8 +57,6 @@ export class KeyboardComponent {
 
   @HostListener('window:keydown', ['$event'])
   keyDownEvent(event: KeyboardEvent) {
-    // console.log('pressed', event.key);
-    // console.log(typeof event.key);
     let currentOctave = this.octave;
     if (this.keysMapped.hasOwnProperty(event.key)) {
       if (event.key === 'k') {
@@ -77,7 +72,7 @@ export class KeyboardComponent {
     }
   }
   @HostListener('window:keyup', ['$event'])
-  keyUpEvent(event: KeyboardEvent) {
+  keyUpEvent() {
     this.releaseNote();
   }
 
