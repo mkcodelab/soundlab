@@ -3,26 +3,70 @@
     <div class="flex justify-center">
 
 
-        <effect-box [effectType]="'Distortion'"
-                    [config]="{}"
-                    (toggle)="toggleEffect($event)"></effect-box>
+        <effect-box [effectType]="'distortion'"
+                    (toggle)="toggleEffect($event)">
+            <input type="range"
+                   (input)="onEffectInput('distortion', 'distortion', distortionInput.value)"
+                   min="0"
+                   max="10"
+                   step="1"
+                   #control
+                   #distortionInput>
+        </effect-box>
 
 
-        <effect-box [effectType]="'FeedbackDelay'"
-                    [config]="{}"
-                    (toggle)="toggleEffect($event)"></effect-box>
+        <effect-box [effectType]="'feedbackDelay'"
+                    (toggle)="toggleEffect($event)">
+
+        </effect-box>
 
 
 
-        <effect-box [effectType]="'Reverb'"
-                    [config]="{}"
-                    (toggle)="toggleEffect($event)"></effect-box>
+        <effect-box [effectType]="'reverb'"
+                    (toggle)="toggleEffect($event)">
+            <input type="range"
+                   (input)="onEffectInput('reverb', 'decay', reverbTimeInput.value)"
+                   #reverbTimeInput
+                   #control
+                   min="0.1"
+                   max="10"
+                   step="0.1">
+        </effect-box>
 
 
 
-        <effect-box [effectType]="'Chorus'"
-                    [config]="{}"
-                    (toggle)="toggleEffect($event)"></effect-box>
+        <effect-box [effectType]="'chorus'"
+                    (toggle)="toggleEffect($event)">
+
+            <label for="chorusFrequency">frequency</label>
+            <input type="range"
+                   name="chorusFrequency"
+                   #chorusFreqInput
+                   (input)="onEffectInput('chorus', 'frequency', chorusFreqInput.value)"
+                   min="0"
+                   max="10"
+                   step="1">
+
+            <label for="chorusDelayTime">delayTime</label>
+            <input type="range"
+                   name="chorusDelayTime"
+                   #chorusDelayTimeInput
+                   (input)="onEffectInput('chorus', 'delayTime', chorusDelayTimeInput.value)"
+                   min="0"
+                   max="10"
+                   step="1">
+
+            <label for="chorusDepth">depth</label>
+            <input type="range"
+                   name="chorusDepth"
+                   (input)="onEffectInput('chorus', 'depth', chorusDepthInput.value)"
+                   #chorusDepthInput
+                   min="0"
+                   max="1"
+                   step="0.1">
+
+
+        </effect-box>
 
 
 

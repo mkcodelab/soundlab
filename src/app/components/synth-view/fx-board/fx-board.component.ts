@@ -5,6 +5,7 @@ import {
   EffectBoxComponent,
   EffectState,
 } from './effect-box/effect-box.component';
+import { EffectControlComponent } from './effect-box/effect-control/effect-control.component';
 
 // interface EffectStates {
 //   delayActive: boolean;
@@ -15,7 +16,7 @@ import {
 @Component({
   selector: 'fx-board',
   standalone: true,
-  imports: [NgClass, EffectBoxComponent],
+  imports: [NgClass, EffectBoxComponent, EffectControlComponent],
   templateUrl: './fx-board.component.html',
   styleUrl: './fx-board.component.scss',
 })
@@ -23,10 +24,13 @@ export class FxBoardComponent {
   synthSvc = inject(SynthService);
 
   toggleEffect(event: EffectState) {
-    console.log(event);
     const effectName = event.effectType as EffectName;
-    event.active
-      ? this.synthSvc.turnOn(effectName)
-      : this.synthSvc.turnOff(effectName);
+
+    this.synthSvc.toggleEffect(effectName, event.active);
+  }
+
+  onEffectInput(effectName: EffectName, param: string, value: any) {
+    // console.log(value);
+    this.synthSvc.setEffectParam(effectName, param, value);
   }
 }

@@ -7,7 +7,7 @@ export type Effect =
   | Tone.Chorus
   | Tone.Reverb;
 
-export type EffectName = 'Distortion' | 'FeedbackDelay' | 'Reverb' | 'Chorus';
+export type EffectName = 'distortion' | 'feedbackDelay' | 'reverb' | 'chorus';
 
 @Injectable({
   providedIn: 'root',
@@ -15,18 +15,20 @@ export type EffectName = 'Distortion' | 'FeedbackDelay' | 'Reverb' | 'Chorus';
 export class SynthService {
   synth = new Tone.Synth();
 
-  delay = new Tone.FeedbackDelay();
+  feedbackDelay = new Tone.FeedbackDelay();
   distortion = new Tone.Distortion(1);
   reverb = new Tone.Reverb();
-  chorus = new Tone.Chorus();
+  chorus = new Tone.Chorus(1, 2, 5);
 
   constructor() {
     this.synth.chain(
       this.distortion,
-      this.delay,
+      this.feedbackDelay,
       this.reverb,
+      this.chorus,
       Tone.getDestination()
     );
+    this.chorus.start();
   }
 
   holdNote(note: string) {
@@ -37,41 +39,11 @@ export class SynthService {
     this.synth.triggerRelease();
   }
 
-  turnOff(effectName: EffectName) {
-    switch (effectName) {
-      case 'Distortion':
-        this.distortion.wet.value = 0;
-        break;
-      case 'FeedbackDelay':
-        this.delay.wet.value = 0;
-        break;
-      case 'Reverb':
-        this.reverb.wet.value = 0;
-        break;
-      case 'Chorus':
-        this.chorus.wet.value = 0;
-        break;
-      default:
-        console.log('error');
-    }
+  toggleEffect(effectName: EffectName, to: boolean) {
+    this[effectName].wet.value = to ? 1 : 0;
   }
 
-  turnOn(effectName: EffectName) {
-    switch (effectName) {
-      case 'Distortion':
-        this.distortion.wet.value = 1;
-        break;
-      case 'FeedbackDelay':
-        this.delay.wet.value = 1;
-        break;
-      case 'Reverb':
-        this.reverb.wet.value = 1;
-        break;
-      case 'Chorus':
-        this.chorus.wet.value = 1;
-        break;
-      default:
-        console.log('error');
-    }
+  setEffectParam(effectName: EffectName, param: any, value: number) {
+    this[effectName].set({ [param]: value });
   }
 }
