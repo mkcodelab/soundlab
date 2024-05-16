@@ -1,6 +1,6 @@
-<div class="bg-neutral-600 p-2">
-    <div>
-        octave: {{octave}}
+<div class="bg-neutral-600 p-2 flex flex-col justify-center">
+    <div class="flex justify-center">
+        <p class="text-white text-xl mb-2">octave: {{octave}}</p>
         <input (input)="changeOctave(+octaveIput.value)"
                value="1"
                type="range"
@@ -11,10 +11,12 @@
 
     </div>
 
-    @for (key of keys; track key) {
-    <button class="bg-slate-200 p-2 w-10 h-20 m-1 rounded-lg"
-            (mousedown)="holdNote(key)"
-            (mouseup)="releaseNote()"
-            (mouseleave)="releaseNote()">{{key}}</button>
-    }
+    <div class="flex justify-center">
+        @for (key of keys; track key) {
+        <button class="bg-slate-200 p-2 w-10 h-40 m-1 rounded-lg"
+                (mousedown)="holdNote(key)"
+                (mouseup)="releaseNote()"
+                (mouseleave)="releaseNote()">{{key}}</button>
+        }
+    </div>
 </div>

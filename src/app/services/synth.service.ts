@@ -16,9 +16,12 @@ export class SynthService {
   synth = new Tone.Synth();
 
   feedbackDelay = new Tone.FeedbackDelay();
-  distortion = new Tone.Distortion(1);
+  distortion = new Tone.Distortion();
   reverb = new Tone.Reverb();
-  chorus = new Tone.Chorus(1, 2, 5);
+  chorus = new Tone.Chorus();
+
+  //   to make multiple keys cappable of playing at the same time, we probably need multiple synths
+  // create multiple synths (for loop) based on keys from keyboardComponent, then in next forloop chain them to the effects.
 
   constructor() {
     this.synth.chain(
