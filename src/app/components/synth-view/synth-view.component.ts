@@ -15,7 +15,7 @@ export class SynthViewComponent {
   onHoldNote(event: string) {
     this.synthSvc.holdNote(event);
   }
-  onReleaseNote() {
-    this.synthSvc.releaseNote();
+  onReleaseNote(event: string) {
+    this.synthSvc.releaseNote(event);
   }
 }

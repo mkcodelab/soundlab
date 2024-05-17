@@ -33,7 +33,11 @@ export class KeyboardComponent {
   }
 
   keys: string[] = [];
+
+  keysPressed: string[] = [];
   notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+  notesPressed: string[] = [];
 
   //   keyboard controls
   keysMapped = {
@@ -57,31 +61,53 @@ export class KeyboardComponent {
 
   @HostListener('window:keydown', ['$event'])
   keyDownEvent(event: KeyboardEvent) {
+    // temporary solution for octave change
     let currentOctave = this.octave;
-    if (this.keysMapped.hasOwnProperty(event.key)) {
-      if (event.key === 'k') {
-        currentOctave = this.octave + 1;
-      }
-      if (!this.noteDown) {
-        this.holdNote(
-          this.keysMapped[event.key as keyof typeof this.keysMapped] +
-            currentOctave
-        );
-        this.noteDown = true;
+
+    if (event.key === 'k') {
+      currentOctave = this.octave + 1;
+    }
+
+    const key =
+      this.keysMapped[event.key as keyof typeof this.keysMapped] +
+      currentOctave;
+
+    if (!this.keysPressed.includes(key)) {
+      this.keysPressed.push(key);
+
+      if (this.keysMapped.hasOwnProperty(event.key)) {
+        this.holdNote(key);
       }
     }
   }
+
   @HostListener('window:keyup', ['$event'])
-  keyUpEvent() {
-    this.releaseNote();
+  keyUpEvent(event: KeyboardEvent) {
+    // temporary solution for octave change
+    let currentOctave = this.octave;
+
+    if (event.key === 'k') {
+      currentOctave = this.octave + 1;
+    }
+
+    const keyToRemove =
+      this.keysMapped[event.key as keyof typeof this.keysMapped] +
+      currentOctave;
+
+    //   delete released key from keypressed array
+    this.keysPressed = this.keysPressed.filter((key) => key !== keyToRemove);
+
+    this.releaseNote(
+      this.keysMapped[event.key as keyof typeof this.keysMapped] + currentOctave
+    );
   }
 
   holdNote(note: string) {
     this.holdNoteEmitter.emit(note);
   }
-  releaseNote() {
-    this.releaseNoteEmitter.emit();
-    this.noteDown = false;
+
+  releaseNote(event: string) {
+    this.releaseNoteEmitter.emit(event);
   }
 
   changeOctave(value: number) {

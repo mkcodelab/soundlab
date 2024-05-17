@@ -15,8 +15,8 @@
         @for (key of keys; track key) {
         <button class="bg-slate-200 p-2 w-10 h-40 m-1 rounded-lg"
                 (mousedown)="holdNote(key)"
-                (mouseup)="releaseNote()"
-                (mouseleave)="releaseNote()">{{key}}</button>
+                (mouseup)="releaseNote(key)"
+                (mouseleave)="releaseNote(key)">{{key}}</button>
         }
     </div>
 </div>
