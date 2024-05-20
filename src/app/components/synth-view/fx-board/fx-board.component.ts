@@ -7,12 +7,6 @@ import {
 } from './effect-box/effect-box.component';
 import { EffectControlComponent } from './effect-box/effect-control/effect-control.component';
 
-// interface EffectStates {
-//   delayActive: boolean;
-//   distortionActive: boolean;
-//   reverbActive: boolean;
-// }
-
 @Component({
   selector: 'fx-board',
   standalone: true,
@@ -30,7 +24,6 @@ export class FxBoardComponent {
   }
 
   onEffectInput(effectName: EffectName, param: string, value: any) {
-    // console.log(value);
     this.synthSvc.setEffectParam(effectName, param, value);
   }
 }

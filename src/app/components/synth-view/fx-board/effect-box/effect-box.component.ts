@@ -43,7 +43,7 @@ export class EffectBoxComponent {
 
   @Output() toggle = new EventEmitter<EffectState>();
 
-  active = true;
+  active = false;
 
   effectToggle() {
     console.log('toggled', this.effectType);

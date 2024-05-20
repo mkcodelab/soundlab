@@ -7,7 +7,9 @@ export type Effect =
   | Tone.Chorus
   | Tone.Reverb;
 
-export type EffectName = 'distortion' | 'feedbackDelay' | 'reverb' | 'chorus';
+export type WaveShape = 'sine' | 'triangle' | 'square' | 'sawtooth';
+
+export type EffectName = 'Distortion' | 'FeedbackDelay' | 'Reverb' | 'Chorus';
 
 @Injectable({
   providedIn: 'root',
@@ -15,20 +17,28 @@ export type EffectName = 'distortion' | 'feedbackDelay' | 'reverb' | 'chorus';
 export class SynthService {
   synth = new Tone.PolySynth(Tone.Synth);
 
-  feedbackDelay = new Tone.FeedbackDelay();
-  distortion = new Tone.Distortion();
-  reverb = new Tone.Reverb();
-  chorus = new Tone.Chorus();
+  effects: Effect[] = [
+    new Tone.FeedbackDelay(),
+    new Tone.Distortion(),
+    new Tone.Reverb(),
+    new Tone.Chorus(),
+  ];
 
   constructor() {
-    this.synth.chain(
-      this.distortion,
-      this.feedbackDelay,
-      this.reverb,
-      this.chorus,
-      Tone.getDestination()
-    );
-    this.chorus.start();
+    // changing options of the polysynth voice (tone.synth)
+    // this.synth.set({
+    //   oscillator: { type: 'triangle11' },
+    //   //   attack (sound start)
+    //   envelope: { attack: 0.1 },
+    // });
+
+    this.synth.chain(...this.effects, Tone.getDestination());
+
+    // start chorus
+    (this.findEffectByName('Chorus') as Tone.Chorus).start();
+
+    // turn effect off at init
+    this.disableAllEffects();
   }
 
   holdNote(note: string) {
@@ -40,10 +50,29 @@ export class SynthService {
   }
 
   toggleEffect(effectName: EffectName, to: boolean) {
-    this[effectName].wet.value = to ? 1 : 0;
+    this.findEffectByName(effectName).wet.value = to ? 1 : 0;
+  }
+
+  disableAllEffects() {
+    for (let effect of this.effects) {
+      effect.wet.value = 0;
+    }
   }
 
   setEffectParam(effectName: EffectName, param: any, value: number) {
-    this[effectName].set({ [param]: value });
+    this.findEffectByName(effectName).set({ [param]: value });
+  }
+
+  findEffectByName(effectName: EffectName) {
+    const i = this.effects.findIndex((effect) => effect.name === effectName);
+    return this.effects[i];
+  }
+
+  changeWaveShape(waveshape: WaveShape) {
+    this.synth.set({
+      oscillator: {
+        type: waveshape,
+      },
+    });
   }
 }

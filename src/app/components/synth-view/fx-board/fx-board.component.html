@@ -2,10 +2,10 @@
     <p class="text-white text-center text-2xl mb-2">Effects</p>
     <div class="flex justify-center">
 
-        <effect-box [effectType]="'distortion'"
+        <effect-box [effectType]="'Distortion'"
                     (toggle)="toggleEffect($event)">
             <input type="range"
-                   (input)="onEffectInput('distortion', 'distortion', distortionInput.value)"
+                   (input)="onEffectInput('Distortion', 'distortion', distortionInput.value)"
                    min="0"
                    max="10"
                    step="1"
@@ -14,13 +14,13 @@
         </effect-box>
 
 
-        <effect-box [effectType]="'feedbackDelay'"
+        <effect-box [effectType]="'FeedbackDelay'"
                     (toggle)="toggleEffect($event)">
 
             <label for="delayTime">delay time</label>
             <input type="range"
                    name="delayTime"
-                   (input)="onEffectInput('feedbackDelay', 'delayTime', delayTimeInput.value)"
+                   (input)="onEffectInput('FeedbackDelay', 'delayTime', delayTimeInput.value)"
                    #delayTimeInput
                    min="0"
                    max="1"
@@ -29,7 +29,7 @@
             <label for="delayFeedback">feedback</label>
             <input type="range"
                    name="delayFeedback"
-                   (input)="onEffectInput('feedbackDelay', 'feedback', delayFeedbackInput.value)"
+                   (input)="onEffectInput('FeedbackDelay', 'feedback', delayFeedbackInput.value)"
                    #delayFeedbackInput
                    min="0"
                    max="1"
@@ -39,10 +39,10 @@
 
 
 
-        <effect-box [effectType]="'reverb'"
+        <effect-box [effectType]="'Reverb'"
                     (toggle)="toggleEffect($event)">
             <input type="range"
-                   (input)="onEffectInput('reverb', 'decay', reverbTimeInput.value)"
+                   (input)="onEffectInput('Reverb', 'decay', reverbTimeInput.value)"
                    #reverbTimeInput
                    #control
                    min="0.1"
@@ -52,14 +52,14 @@
 
 
 
-        <effect-box [effectType]="'chorus'"
+        <effect-box [effectType]="'Chorus'"
                     (toggle)="toggleEffect($event)">
 
             <label for="chorusFrequency">frequency</label>
             <input type="range"
                    name="chorusFrequency"
                    #chorusFreqInput
-                   (input)="onEffectInput('chorus', 'frequency', chorusFreqInput.value)"
+                   (input)="onEffectInput('Chorus', 'frequency', chorusFreqInput.value)"
                    min="0"
                    max="10"
                    step="1">
@@ -68,7 +68,7 @@
             <input type="range"
                    name="chorusDelayTime"
                    #chorusDelayTimeInput
-                   (input)="onEffectInput('chorus', 'delayTime', chorusDelayTimeInput.value)"
+                   (input)="onEffectInput('Chorus', 'delayTime', chorusDelayTimeInput.value)"
                    min="0"
                    max="10"
                    step="1">
@@ -76,7 +76,7 @@
             <label for="chorusDepth">depth</label>
             <input type="range"
                    name="chorusDepth"
-                   (input)="onEffectInput('chorus', 'depth', chorusDepthInput.value)"
+                   (input)="onEffectInput('Chorus', 'depth', chorusDepthInput.value)"
                    #chorusDepthInput
                    min="0"
                    max="1"
