@@ -1,17 +1,23 @@
 <div class="p-2 mb-2 bg-neutral-600">
     <p class="text-white text-center text-2xl mb-2">Effects</p>
     <div class="flex justify-center">
-        <div class="h-full bg-gray-400 mr-2 rounded-xl">
-            <p class="text-white text-center p-2">waveshape</p>
-            <select class="p-2 m-2"
-                    name="waveshape"
-                    #waveshapeSelect
-                    (change)="changeWaveShape(waveshapeSelect.value)">
+        <div class="flex flex-col mr-2">
+            <!-- move to component -->
+            <!-- waveshape -->
+            <div class="h-full bg-gray-400 rounded-xl">
+                <p class="text-white text-center p-2">waveshape</p>
+                <select class="p-2 m-2"
+                        name="waveshape"
+                        #waveshapeSelect
+                        (change)="changeWaveShape(waveshapeSelect.value)">
 
-                @for(shape of waveshapes; track shape) {
-                <option [value]="shape">{{shape}}</option>
-                }
-            </select>
+                    @for(shape of waveshapes; track shape) {
+                    <option [value]="shape">{{shape}}</option>
+                    }
+                </select>
+            </div>
+
+            <envelope (envelopeInputChange)="onEnvelopeInput($event)"></envelope>
         </div>
 
         <effect-box [effectType]="'Distortion'"
@@ -21,7 +27,6 @@
                    min="0"
                    max="10"
                    step="1"
-                   #control
                    #distortionInput>
         </effect-box>
 
@@ -56,7 +61,6 @@
             <input type="range"
                    (input)="onEffectInput('Reverb', 'decay', reverbTimeInput.value)"
                    #reverbTimeInput
-                   #control
                    min="0.1"
                    max="10"
                    step="0.1">

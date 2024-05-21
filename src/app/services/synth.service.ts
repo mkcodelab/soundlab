@@ -11,6 +11,8 @@ export type WaveShape = 'sine' | 'triangle' | 'square' | 'sawtooth';
 
 export type EffectName = 'Distortion' | 'FeedbackDelay' | 'Reverb' | 'Chorus';
 
+export type EnvelopeParams = 'attack' | 'decay' | 'sustain' | 'release';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -27,7 +29,7 @@ export class SynthService {
   constructor() {
     // changing options of the polysynth voice (tone.synth)
     this.synth.set({
-      envelope: { attack: 0.1, decay: 0.1, sustain: 0.5, release: 0.1 },
+      envelope: { attack: 0.1, decay: 0.1, sustain: 0.5, release: 5 },
     });
 
     this.synth.chain(...this.effects, Tone.getDestination());
@@ -53,7 +55,8 @@ export class SynthService {
 
   disableAllEffects() {
     for (let effect of this.effects) {
-      effect.wet.value = 0;
+      //   effect.wet.value = 0;
+      effect.set({ wet: 0 });
     }
   }
 
@@ -71,6 +74,12 @@ export class SynthService {
       oscillator: {
         type: waveshape,
       },
+    });
+  }
+  setEnvelopeParam(param: EnvelopeParams, value: number) {
+    this.synth.set({
+      //   envelope: { attack: 0.1, decay: 0.1, sustain: 0.5, release: 0.1 },
+      envelope: { [param]: value },
     });
   }
 }

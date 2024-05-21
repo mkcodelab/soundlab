@@ -10,11 +10,20 @@ import {
   EffectState,
 } from './effect-box/effect-box.component';
 import { EffectControlComponent } from './effect-box/effect-control/effect-control.component';
+import {
+  EnvelopeComponent,
+  EnvelopeInputData,
+} from './envelope/envelope.component';
 
 @Component({
   selector: 'fx-board',
   standalone: true,
-  imports: [NgClass, EffectBoxComponent, EffectControlComponent],
+  imports: [
+    NgClass,
+    EffectBoxComponent,
+    EffectControlComponent,
+    EnvelopeComponent,
+  ],
   templateUrl: './fx-board.component.html',
   styleUrl: './fx-board.component.scss',
 })
@@ -31,6 +40,10 @@ export class FxBoardComponent {
 
   onEffectInput(effectName: EffectName, param: string, value: any) {
     this.synthSvc.setEffectParam(effectName, param, value);
+  }
+
+  onEnvelopeInput(event: EnvelopeInputData) {
+    this.synthSvc.setEnvelopeParam(event.param, event.value);
   }
 
   changeWaveShape(value: string) {
