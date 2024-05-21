@@ -26,11 +26,9 @@ export class SynthService {
 
   constructor() {
     // changing options of the polysynth voice (tone.synth)
-    // this.synth.set({
-    //   oscillator: { type: 'triangle11' },
-    //   //   attack (sound start)
-    //   envelope: { attack: 0.1 },
-    // });
+    this.synth.set({
+      envelope: { attack: 0.1, decay: 0.1, sustain: 0.5, release: 0.1 },
+    });
 
     this.synth.chain(...this.effects, Tone.getDestination());
 

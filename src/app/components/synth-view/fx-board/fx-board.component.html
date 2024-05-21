@@ -1,6 +1,18 @@
 <div class="p-2 mb-2 bg-neutral-600">
     <p class="text-white text-center text-2xl mb-2">Effects</p>
     <div class="flex justify-center">
+        <div class="h-full bg-gray-400 mr-2 rounded-xl">
+            <p class="text-white text-center p-2">waveshape</p>
+            <select class="p-2 m-2"
+                    name="waveshape"
+                    #waveshapeSelect
+                    (change)="changeWaveShape(waveshapeSelect.value)">
+
+                @for(shape of waveshapes; track shape) {
+                <option [value]="shape">{{shape}}</option>
+                }
+            </select>
+        </div>
 
         <effect-box [effectType]="'Distortion'"
                     (toggle)="toggleEffect($event)">
