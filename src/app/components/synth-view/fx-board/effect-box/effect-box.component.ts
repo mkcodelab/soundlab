@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { EffectName } from '../../../../services/synth.service';
+import { Effect, EffectName } from '../../../../services/synth.service';
 import { EffectControlComponent } from './effect-control/effect-control.component';
 
 export interface DistortionConfig {
@@ -30,6 +30,11 @@ export interface EffectState {
   active: boolean;
 }
 
+export interface InputConfig {
+  name: EffectName;
+  parameter: string;
+}
+
 @Component({
   selector: 'effect-box',
   standalone: true,
@@ -40,6 +45,8 @@ export interface EffectState {
 export class EffectBoxComponent {
   @Input({ required: true }) effectType: EffectName;
   @Input() colorClass: string;
+
+  @Input() inputConfig: InputConfig[];
 
   @Output() toggle = new EventEmitter<EffectState>();
 

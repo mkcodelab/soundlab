@@ -50,4 +50,8 @@ export class FxBoardComponent {
     console.log('changed waveshape: ', value);
     this.synthSvc.changeWaveShape(value as WaveShape);
   }
+
+  getEffectParamValue(effect: EffectName, param: string) {
+    return this.synthSvc.getEffectParamValue(effect, param);
+  }
 }

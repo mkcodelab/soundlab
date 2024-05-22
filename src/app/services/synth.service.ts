@@ -60,11 +60,15 @@ export class SynthService {
     }
   }
 
-  setEffectParam(effectName: EffectName, param: any, value: number) {
+  setEffectParam(effectName: EffectName, param: string, value: number) {
     this.findEffectByName(effectName).set({ [param]: value });
   }
 
-  findEffectByName(effectName: EffectName) {
+  getEffectParamValue(effectName: EffectName, param: string) {
+    return this.findEffectByName(effectName)[param as keyof Effect];
+  }
+
+  findEffectByName(effectName: EffectName): Effect {
     const i = this.effects.findIndex((effect) => effect.name === effectName);
     return this.effects[i];
   }

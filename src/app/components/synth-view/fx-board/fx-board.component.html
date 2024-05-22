@@ -23,10 +23,11 @@
         <effect-box [effectType]="'Distortion'"
                     (toggle)="toggleEffect($event)">
             <input type="range"
+                   [value]="getEffectParamValue('Distortion', 'distortion')"
                    (input)="onEffectInput('Distortion', 'distortion', distortionInput.value)"
                    min="0"
-                   max="10"
-                   step="1"
+                   max="5"
+                   step="0.1"
                    #distortionInput>
         </effect-box>
 
@@ -37,15 +38,19 @@
             <label for="delayTime">delay time</label>
             <input type="range"
                    name="delayTime"
+                   [value]="getEffectParamValue('FeedbackDelay', 'delayTime')"
                    (input)="onEffectInput('FeedbackDelay', 'delayTime', delayTimeInput.value)"
                    #delayTimeInput
                    min="0"
                    max="1"
                    step="0.1">
+            <!-- name: EffectName, parameter: keyof Effect -->
+            <!-- parameter is templatevariable -->
 
             <label for="delayFeedback">feedback</label>
             <input type="range"
                    name="delayFeedback"
+                   [value]="getEffectParamValue('FeedbackDelay', 'feedback')"
                    (input)="onEffectInput('FeedbackDelay', 'feedback', delayFeedbackInput.value)"
                    #delayFeedbackInput
                    min="0"
@@ -59,6 +64,7 @@
         <effect-box [effectType]="'Reverb'"
                     (toggle)="toggleEffect($event)">
             <input type="range"
+                   [value]="getEffectParamValue('Reverb', 'decay')"
                    (input)="onEffectInput('Reverb', 'decay', reverbTimeInput.value)"
                    #reverbTimeInput
                    min="0.1"
@@ -75,6 +81,7 @@
             <input type="range"
                    name="chorusFrequency"
                    #chorusFreqInput
+                   [value]="getEffectParamValue('Chorus', 'frequency')"
                    (input)="onEffectInput('Chorus', 'frequency', chorusFreqInput.value)"
                    min="0"
                    max="10"
@@ -84,6 +91,7 @@
             <input type="range"
                    name="chorusDelayTime"
                    #chorusDelayTimeInput
+                   [value]="getEffectParamValue('Chorus', 'delayTime')"
                    (input)="onEffectInput('Chorus', 'delayTime', chorusDelayTimeInput.value)"
                    min="0"
                    max="10"
@@ -92,6 +100,7 @@
             <label for="chorusDepth">depth</label>
             <input type="range"
                    name="chorusDepth"
+                   [value]="getEffectParamValue('Chorus', 'depth')"
                    (input)="onEffectInput('Chorus', 'depth', chorusDepthInput.value)"
                    #chorusDepthInput
                    min="0"
