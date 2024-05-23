@@ -1,24 +1,23 @@
-<div class="p-2 mb-2 bg-neutral-600">
+<div class="p-4 mb-2 bg-neutral-700">
     <p class="text-white text-center text-2xl mb-2">Effects</p>
-    <div class="flex justify-center">
-        <div class="flex flex-col mr-2">
-            <!-- move to component -->
-            <!-- waveshape -->
-            <div class="h-full bg-gray-400 rounded-xl">
-                <p class="text-white text-center p-2">waveshape</p>
-                <select class="p-2 m-2"
-                        name="waveshape"
-                        #waveshapeSelect
-                        (change)="changeWaveShape(waveshapeSelect.value)">
+    <div class="flex justify-center range-input">
+        <!-- move to component -->
+        <!-- waveshape -->
+        <div class="bg-neutral-400 rounded-xl mr-2 border-emboss">
+            <p class="text-white text-center p-2">waveshape</p>
+            <select class="p-2 m-2"
+                    name="waveshape"
+                    #waveshapeSelect
+                    (change)="changeWaveShape(waveshapeSelect.value)">
 
-                    @for(shape of waveshapes; track shape) {
-                    <option [value]="shape">{{shape}}</option>
-                    }
-                </select>
-            </div>
-
-            <envelope (envelopeInputChange)="onEnvelopeInput($event)"></envelope>
+                @for(shape of waveshapes; track shape) {
+                <option [value]="shape">{{shape}}</option>
+                }
+            </select>
         </div>
+
+        <envelope class="mr-2"
+                  (envelopeInputChange)="onEnvelopeInput($event)"></envelope>
 
         <effect-box [effectType]="'Distortion'"
                     (toggle)="toggleEffect($event)">
@@ -31,11 +30,11 @@
                    #distortionInput>
         </effect-box>
 
-
-        <effect-box [effectType]="'FeedbackDelay'"
+        <effect-box class="range-input"
+                    [effectType]="'FeedbackDelay'"
                     (toggle)="toggleEffect($event)">
 
-            <label for="delayTime">delay time</label>
+            <label for="delayTime">Delay time</label>
             <input type="range"
                    name="delayTime"
                    [value]="getEffectParamValue('FeedbackDelay', 'delayTime')"
@@ -44,10 +43,8 @@
                    min="0"
                    max="1"
                    step="0.1">
-            <!-- name: EffectName, parameter: keyof Effect -->
-            <!-- parameter is templatevariable -->
 
-            <label for="delayFeedback">feedback</label>
+            <label for="delayFeedback">Feedback</label>
             <input type="range"
                    name="delayFeedback"
                    [value]="getEffectParamValue('FeedbackDelay', 'feedback')"
@@ -58,8 +55,6 @@
                    step="0.1">
 
         </effect-box>
-
-
 
         <effect-box [effectType]="'Reverb'"
                     (toggle)="toggleEffect($event)">
@@ -72,12 +67,10 @@
                    step="0.1">
         </effect-box>
 
-
-
         <effect-box [effectType]="'Chorus'"
                     (toggle)="toggleEffect($event)">
 
-            <label for="chorusFrequency">frequency</label>
+            <label for="chorusFrequency">Frequency</label>
             <input type="range"
                    name="chorusFrequency"
                    #chorusFreqInput
@@ -87,7 +80,7 @@
                    max="10"
                    step="1">
 
-            <label for="chorusDelayTime">delayTime</label>
+            <label for="chorusDelayTime">Delay time</label>
             <input type="range"
                    name="chorusDelayTime"
                    #chorusDelayTimeInput
@@ -97,7 +90,7 @@
                    max="10"
                    step="1">
 
-            <label for="chorusDepth">depth</label>
+            <label for="chorusDepth">Depth</label>
             <input type="range"
                    name="chorusDepth"
                    [value]="getEffectParamValue('Chorus', 'depth')"
@@ -106,11 +99,7 @@
                    min="0"
                    max="1"
                    step="0.1">
-
-
         </effect-box>
-
-
 
     </div>
 </div>

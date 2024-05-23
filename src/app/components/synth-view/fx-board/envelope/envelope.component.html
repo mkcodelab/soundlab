@@ -1,40 +1,43 @@
 <!-- envelope -->
-<div class="bg-gray-400 flex flex-col rounded-xl">
+<div class="bg-neutral-400 rounded-xl p-2 border-emboss">
     <p class="text-white text-center">Envelope</p>
 
-    <label for="envelopeAttackInput">Attack</label>
-    <input type="range"
-           name="envelopeAttackInput"
-           #envelopeAttackInput
-           (input)="onEnvelopeInput('attack', +envelopeAttackInput.value)"
-           min="0"
-           max="2"
-           step="0.1">
+    <div class=" border-groove rounded-xl flex flex-col p-2 shadow-2xl label-white">
+        <label for="envelopeAttackInput">Attack</label>
+        <input type="range"
+               name="envelopeAttackInput"
+               #envelopeAttackInput
+               (input)="onEnvelopeInput('attack', +envelopeAttackInput.value)"
+               min="0"
+               max="2"
+               step="0.1">
 
-    <label for="envelopeDecayInput">Decay</label>
-    <input type="range"
-           name="envelopeDecayInput"
-           #envelopeDecayInput
-           (input)="onEnvelopeInput('decay', +envelopeDecayInput.value)"
-           min="0"
-           max="2"
-           step="0.1">
+        <label for="envelopeDecayInput">Decay</label>
+        <input type="range"
+               name="envelopeDecayInput"
+               #envelopeDecayInput
+               (input)="onEnvelopeInput('decay', +envelopeDecayInput.value)"
+               min="0"
+               max="2"
+               step="0.1">
 
-    <label for="envelopeReleaseInput">Release</label>
-    <input type="range"
-           name="envelopeReleaseInput"
-           #envelopeReleaseInput
-           (input)="onEnvelopeInput('release', +envelopeReleaseInput.value)"
-           min="0.1"
-           max="5"
-           step="0.1">
+        <label for="envelopeReleaseInput">Release</label>
+        <input type="range"
+               name="envelopeReleaseInput"
+               #envelopeReleaseInput
+               (input)="onEnvelopeInput('release', +envelopeReleaseInput.value)"
+               min="0.1"
+               max="5"
+               step="0.1">
 
-    <label for="envelopeSustainInput">Sustain</label>
-    <input type="range"
-           name="envelopeSustainInput"
-           #envelopeSustainInput
-           (input)="onEnvelopeInput('sustain', +envelopeSustainInput.value)"
-           min="0.1"
-           max="1"
-           step="0.1">
+        <label for="envelopeSustainInput">Sustain</label>
+        <input type="range"
+               name="envelopeSustainInput"
+               #envelopeSustainInput
+               (input)="onEnvelopeInput('sustain', +envelopeSustainInput.value)"
+               min="0.1"
+               max="1"
+               step="0.1">
+
+    </div>
 </div>

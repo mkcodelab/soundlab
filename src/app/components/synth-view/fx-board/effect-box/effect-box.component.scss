@@ -2,3 +2,11 @@
   background: rgb(255, 146, 146);
   box-shadow: 0 0 20px 15px red;
 }
+
+.button-active {
+  box-shadow: inset 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.button-inactive {
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
+}

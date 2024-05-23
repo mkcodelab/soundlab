@@ -1,7 +1,8 @@
-<div class="p-2 mr-2 h-full rounded-lg"
-     [ngClass]="colorClass ? colorClass : 'bg-gray-400'">
+<div class="p-2 mr-2 h-full rounded-lg shadow-2xl border-emboss"
+     [ngClass]="colorClass ? colorClass : 'bg-neutral-400'">
     <div class="flex justify-between mb-2">
-        <button class="p-2 bg-neutral-200 rounded-lg"
+        <button class="p-2 rounded-lg font-bold text-gray-500"
+                [ngClass]="active? 'bg-neutral-300 button-active':'bg-neutral-200 button-inactive'"
                 title="click to toggle effect"
                 (click)="effectToggle()">{{effectType}}</button>
 
@@ -12,7 +13,7 @@
     </div>
 
     <!-- effect controls -->
-    <div class="p-2 bg-neutral-200 flex flex-col rounded-lg">
+    <div class="p-2 flex flex-col rounded-lg shadow-xl border-groove label-white">
 
         <ng-content></ng-content>
     </div>
