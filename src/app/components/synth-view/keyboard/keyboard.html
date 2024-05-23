@@ -13,7 +13,8 @@
 
     <div class="flex justify-center">
         @for (key of keys; track key) {
-        <button class="bg-slate-200 p-2 w-10 h-40 m-1 rounded-lg"
+        <button class="bg-slate-200 p-2 w-10 h-40 m-1 rounded-lg key-pressed"
+                [ngClass]="{'bg-red-400' : isKeyActive(key)}"
                 (mousedown)="holdNote(key)"
                 (mouseup)="releaseNote(key)"
                 (mouseleave)="releaseNote(key)">{{key}}</button>

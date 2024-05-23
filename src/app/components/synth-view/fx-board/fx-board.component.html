@@ -3,9 +3,9 @@
     <div class="flex justify-center range-input">
         <!-- move to component -->
         <!-- waveshape -->
-        <div class="bg-neutral-400 rounded-xl mr-2 border-emboss">
+        <div class="bg-neutral-400 rounded-xl mr-2 border-emboss noise-bg">
             <p class="text-white text-center p-2">waveshape</p>
-            <select class="p-2 m-2"
+            <!-- <select class="p-2 m-2"
                     name="waveshape"
                     #waveshapeSelect
                     (change)="changeWaveShape(waveshapeSelect.value)">
@@ -13,7 +13,21 @@
                 @for(shape of waveshapes; track shape) {
                 <option [value]="shape">{{shape}}</option>
                 }
-            </select>
+            </select> -->
+            <div class="flex flex-col">
+                @for(shape of waveshapes; track shape) {
+                <div class="label-white">
+                    <input type="radio"
+                           [id]="shape"
+                           name="waveshape"
+                           (change)="changeWaveShape(shape)">
+
+                    <label for="shape">{{shape}}</label>
+                </div>
+                }
+
+            </div>
+
         </div>
 
         <envelope class="mr-2"

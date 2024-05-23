@@ -7,12 +7,14 @@ import {
 } from '@angular/core';
 import { SynthService } from '../../../services/synth.service';
 import { BehaviorSubject } from 'rxjs';
+import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
   standalone: true,
-  imports: [],
+  imports: [NgClass, NgStyle],
   templateUrl: './keyboard.html',
   selector: 'keyboard',
+  styleUrl: './keyboard.scss',
 })
 export class KeyboardComponent {
   synthSvc = inject(SynthService);
@@ -100,6 +102,10 @@ export class KeyboardComponent {
     this.releaseNote(
       this.keysMapped[event.key as keyof typeof this.keysMapped] + currentOctave
     );
+  }
+
+  isKeyActive(key: string): boolean {
+    return this.keysPressed.includes(key);
   }
 
   holdNote(note: string) {

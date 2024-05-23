@@ -28,6 +28,10 @@ $border-width: 4px;
     }
   }
 
+  .noise-bg {
+    background-image: url("../../../../assets/noise.svg");
+  }
+
   .range-input {
     input[type="range"] {
       appearance: none;
