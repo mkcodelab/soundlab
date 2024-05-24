@@ -32,6 +32,20 @@ $border-width: 4px;
     background-image: url("../../../../assets/noise.svg");
   }
 
+  .waveform-radio {
+    appearance: none;
+    @include groove;
+    width: 20px;
+    height: 20px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    cursor: pointer;
+
+    &:checked {
+      background: red;
+    }
+  }
+
   .range-input {
     input[type="range"] {
       appearance: none;

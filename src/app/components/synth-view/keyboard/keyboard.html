@@ -1,4 +1,4 @@
-<div class="bg-neutral-600 p-2 flex flex-col justify-center">
+<div class="bg-neutral-700 p-2 flex flex-col justify-center">
     <div class="flex justify-center">
         <p class="text-white text-xl mb-2">octave: {{octave}}</p>
         <input (input)="changeOctave(+octaveIput.value)"
@@ -13,8 +13,8 @@
 
     <div class="flex justify-center">
         @for (key of keys; track key) {
-        <button class="bg-slate-200 p-2 w-10 h-40 m-1 rounded-lg key-pressed"
-                [ngClass]="{'bg-red-400' : isKeyActive(key)}"
+        <button class=" p-2 w-10 h-40 m-1 rounded-lg key-pressed"
+                [ngClass]="isKeyActive(key) ? 'bg-red-400' : 'bg-slate-200'"
                 (mousedown)="holdNote(key)"
                 (mouseup)="releaseNote(key)"
                 (mouseleave)="releaseNote(key)">{{key}}</button>

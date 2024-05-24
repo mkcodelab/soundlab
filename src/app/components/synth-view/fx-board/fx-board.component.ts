@@ -14,6 +14,14 @@ import {
   EnvelopeComponent,
   EnvelopeInputData,
 } from './envelope/envelope.component';
+import { Time } from 'tone/build/esm/core/type/Units';
+
+export interface EnvelopeValues {
+  attack: Time;
+  decay: Time;
+  release: Time;
+  sustain: number;
+}
 
 @Component({
   selector: 'fx-board',
@@ -47,11 +55,20 @@ export class FxBoardComponent {
   }
 
   changeWaveShape(value: string) {
-    console.log('changed waveshape: ', value);
     this.synthSvc.changeWaveShape(value as WaveShape);
   }
 
   getEffectParamValue(effect: EffectName, param: string) {
     return this.synthSvc.getEffectParamValue(effect, param);
+  }
+
+  getEnvelopeValues(): EnvelopeValues {
+    const envelope = this.synthSvc.getEnvelopeValue();
+    return {
+      attack: envelope.attack,
+      decay: envelope.decay,
+      release: envelope.release,
+      sustain: envelope.sustain,
+    };
   }
 }

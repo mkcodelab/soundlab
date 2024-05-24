@@ -28,9 +28,8 @@ export class SynthService {
 
   constructor() {
     // changing options of the polysynth voice (tone.synth)
-    this.synth.set({
-      envelope: { attack: 0.1, decay: 0.1, sustain: 0.5, release: 5 },
-    });
+    // in that way we can load values from preset
+    this.initEnvelopeValues();
 
     this.synth.chain(...this.effects, Tone.getDestination());
 
@@ -55,7 +54,6 @@ export class SynthService {
 
   disableAllEffects() {
     for (let effect of this.effects) {
-      //   effect.wet.value = 0;
       effect.set({ wet: 0 });
     }
   }
@@ -82,8 +80,17 @@ export class SynthService {
   }
   setEnvelopeParam(param: EnvelopeParams, value: number) {
     this.synth.set({
-      //   envelope: { attack: 0.1, decay: 0.1, sustain: 0.5, release: 0.1 },
       envelope: { [param]: value },
+    });
+  }
+
+  getEnvelopeValue() {
+    return this.synth.get().envelope;
+  }
+
+  initEnvelopeValues() {
+    this.synth.set({
+      envelope: { attack: 0.1, decay: 0.1, sustain: 0.1, release: 0.1 },
     });
   }
 }
