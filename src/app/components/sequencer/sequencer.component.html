@@ -1,34 +1,64 @@
-<h1>Sequencer</h1>
+<h1 class="text-2xl text-white text-center">Soundlab Sequencer</h1>
 
-<div>
-    <p>tempo</p>
-    <input type="range"
-           min="60"
-           max="240"
-           step="1"
-           #tempoInput
-           (change)="setBpm(+tempoInput.value)">
-    <label for="tempoInput">{{tempoInput.value}} bpm</label>
-    <button class="bg-neutral-200 p-2 m-2"
-            (click)="sequencerToggle()">{{isPlaying ? 'Stop' : 'Start'}}</button>
+<div class="flex flex-col justify-center">
+    <div class="p-4">
+        <div>
+
+            <input type="range"
+                   min="0"
+                   max="1"
+                   step="0.1"
+                   #gainInput
+                   (input)="changeGain(+gainInput.value)">
+            <label class="text-white"
+                   for="gainInput">Volume</label>
+        </div>
+
+        <div>
+            <input type="range"
+                   min="60"
+                   max="240"
+                   step="1"
+                   #tempoInput
+                   [value]="bpm"
+                   (input)="setBpm(+tempoInput.value)">
+            <label class="text-white"
+                   for="tempoInput">{{tempoInput.value}} bpm</label>
+
+        </div>
+
+        <button class="bg-neutral-200 p-2 m-2"
+                (click)="sequencerToggle()">{{isPlaying ? 'Stop' : 'Start'}}</button>
+
+    </div>
     <!-- cols -->
-    <div class="flex flex-col">
+    <div class="flex justify-center">
 
-
-        @for(instrument of instrumentButtons; track instrument) {
-        <div class="flex">
-            @for(beatButton of instrument; track beatButton) {
-
-            <button class="p-4 m-1"
-                    [ngClass]="beatButton.isActive? 'bg-red-200' : 'bg-neutral-200'"
-                    (click)="toggleActiveBeat(beatButton)">
-                beat {{beatButton.id}}
-            </button>
-
+        <div class="flex flex-col">
+            @for(instrument of instruments; track instrument) {
+            <span class="p-1 m-1 h-10 rounded-lg bg-neutral-200 block text-center">{{instrument.name}}</span>
             }
 
         </div>
-        }
+
+        <div>
+            @for(instrument of instrumentButtons; track instrument) {
+            <div class="flex justify-center">
+
+                @for(beatButton of instrument; track beatButton) {
+
+                <button class="p-1 m-1 w-10 h-10 rounded-lg text-center"
+                        [ngClass]="beatButton.isActive? 'bg-green-500' : 'bg-neutral-200'"
+                        (click)="toggleActiveBeat(beatButton)">
+                    {{beatButton.id}}
+                </button>
+
+                }
+
+            </div>
+            }
+
+        </div>
 
     </div>
 </div>

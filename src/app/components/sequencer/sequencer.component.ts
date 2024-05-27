@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { BeatButton, SequencerService } from '../../services/sequencer.service';
 import { NgClass } from '@angular/common';
+import { gainToDb } from 'tone';
 
 @Component({
   standalone: true,
@@ -29,5 +30,13 @@ export class SequencerComponent {
 
   setBpm(bpm: number) {
     this.sequencerSvc.setBpm(bpm);
+  }
+
+  get bpm() {
+    return this.sequencerSvc.bpm;
+  }
+
+  changeGain(gainValue: number) {
+    this.sequencerSvc.changeGain(gainValue);
   }
 }

@@ -24,7 +24,7 @@ export class SequencerService {
     }, '8n');
   }
 
-  numberOfBeats = 8;
+  numberOfBeats = 16;
 
   currentBeat = 0;
 
@@ -53,6 +53,10 @@ export class SequencerService {
     this.transport.set({ bpm: bpm });
   }
 
+  get bpm(): number {
+    return this.transport.bpm.value;
+  }
+
   toggleActiveBeat(beatBtn: BeatButton) {
     beatBtn.isActive = !beatBtn.isActive;
   }
@@ -79,10 +83,14 @@ export class SequencerService {
 
       if (button.isActive) {
         // synth.triggerAttackRelease(note.note, '8n', time)
-        synth.triggerAttackRelease('C4', '8n', time);
+        synth.triggerAttackRelease('D4', '8n', time);
       }
     });
 
     this.currentBeat = (this.currentBeat + 1) % this.numberOfBeats;
+  }
+
+  changeGain(gainValue: number) {
+    this.gain.gain.value = gainValue;
   }
 }
