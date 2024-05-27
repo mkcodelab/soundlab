@@ -1,0 +1,31 @@
+<h1>Sequencer</h1>
+
+<div>
+    <p>tempo</p>
+    <input type="range"
+           min="60"
+           max="240"
+           step="1">
+    <button class="bg-neutral-200 p-2 m-2"
+            (click)="sequencerToggle()">{{isPlaying ? 'Stop' : 'Start'}}</button>
+    <!-- cols -->
+    <div class="flex flex-col">
+
+
+        @for(instrument of instrumentButtons; track instrument) {
+        <div class="flex">
+            @for(beatButton of instrument; track beatButton) {
+
+            <button class="p-4 m-1"
+                    [ngClass]="beatButton.isActive? 'bg-red-200' : 'bg-neutral-200'"
+                    (click)="toggleActiveBeat(beatButton)">
+                beat {{beatButton.id}}
+            </button>
+
+            }
+
+        </div>
+        }
+
+    </div>
+</div>
