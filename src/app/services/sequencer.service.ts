@@ -35,8 +35,9 @@ export class SequencerService {
   //   change synths for some samples
   synths = [
     new Tone.Synth({ oscillator: { type: 'square' } }),
-    new Tone.Synth({ oscillator: { type: 'triangle' } }),
-    new Tone.Synth({ oscillator: { type: 'sawtooth' } }),
+    new Tone.MetalSynth(),
+    new Tone.MembraneSynth({ oscillator: { type: 'sawtooth' } }),
+    new Tone.PluckSynth(),
   ];
 
   gain = new Tone.Gain(0.5);
@@ -57,15 +58,13 @@ export class SequencerService {
   }
 
   initButtons() {
-    for (let instrument of this.synths) {
+    this.synths.forEach(() => {
       const beatButtonArr = [];
-
       for (let i = 0; i < this.numberOfBeats; i++) {
         beatButtonArr.push(new BeatButton(i));
       }
-
       this.instrumentButtons.push(beatButtonArr);
-    }
+    });
   }
 
   sequencerToggle() {

@@ -26,4 +26,8 @@ export class SequencerComponent {
   get isPlaying(): boolean {
     return this.sequencerSvc.isPlaying;
   }
+
+  setBpm(bpm: number) {
+    this.sequencerSvc.setBpm(bpm);
+  }
 }

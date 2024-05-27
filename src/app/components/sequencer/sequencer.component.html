@@ -5,7 +5,10 @@
     <input type="range"
            min="60"
            max="240"
-           step="1">
+           step="1"
+           #tempoInput
+           (change)="setBpm(+tempoInput.value)">
+    <label for="tempoInput">{{tempoInput.value}} bpm</label>
     <button class="bg-neutral-200 p-2 m-2"
             (click)="sequencerToggle()">{{isPlaying ? 'Stop' : 'Start'}}</button>
     <!-- cols -->
