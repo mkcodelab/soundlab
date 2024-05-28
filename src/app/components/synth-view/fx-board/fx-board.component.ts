@@ -9,7 +9,6 @@ import {
   EffectBoxComponent,
   EffectState,
 } from './effect-box/effect-box.component';
-import { EffectControlComponent } from './effect-box/effect-control/effect-control.component';
 import {
   EnvelopeComponent,
   EnvelopeInputData,
@@ -26,12 +25,7 @@ export interface EnvelopeValues {
 @Component({
   selector: 'fx-board',
   standalone: true,
-  imports: [
-    NgClass,
-    EffectBoxComponent,
-    EffectControlComponent,
-    EnvelopeComponent,
-  ],
+  imports: [NgClass, EffectBoxComponent, EnvelopeComponent],
   templateUrl: './fx-board.component.html',
   styleUrl: './fx-board.component.scss',
 })

@@ -1,7 +1,10 @@
-<div class="flex p-2 bg-gray-400/20">
+<div class="flex bg-neutral-400">
     <ng-content></ng-content>
-    <button class="p-2 mr-1 bg-slate-200"
-            [routerLink]="'synth'">Synth</button>
-    <button class="p-2 mr-1 bg-slate-200"
-            [routerLink]="'sequencer'">Sequencer</button>
+
+    @for(link of links; track link) {
+    <button class="p-2 mr-2 text-white"
+            [routerLink]="link.url"
+            [routerLinkActive]="'bg-neutral-500'">{{link.title}}</button>
+
+    }
 </div>

@@ -1,7 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Effect, EffectName } from '../../../../services/synth.service';
-import { EffectControlComponent } from './effect-control/effect-control.component';
+import { EffectName } from '../../../../services/synth.service';
 
 export interface DistortionConfig {
   distortion: number;
@@ -38,7 +37,7 @@ export interface InputConfig {
 @Component({
   selector: 'effect-box',
   standalone: true,
-  imports: [NgClass, EffectControlComponent],
+  imports: [NgClass],
   templateUrl: './effect-box.component.html',
   styleUrl: './effect-box.component.scss',
 })
