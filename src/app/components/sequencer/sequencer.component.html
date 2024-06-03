@@ -27,8 +27,29 @@
 
         </div>
 
-        <button class="bg-neutral-200 p-2 m-2 rounded-lg"
-                (click)="sequencerToggle()">{{isPlaying ? 'Stop' : 'Start'}}</button>
+        <div class="flex m-2">
+
+            <button class="bg-neutral-200 p-2 m-2 rounded-lg"
+                    (click)="sequencerToggle()">{{isPlaying ? 'Stop' : 'Start'}}</button>
+
+            <div class="flex">
+                <button class="bg-neutral-200 p-2 m-2 rounded-lg"
+                        (click)="openClearAllPrompt()">Clear All</button>
+
+                @if(clearAllPromptOpen) {
+                <div class="bg-neutral-400 rounded-lg pr-2 pl-2">
+                    <span class="text-white">Are you sure?</span>
+                    <button class="bg-neutral-200 p-2 m-2 rounded-lg"
+                            (click)="closeClearAllPrompt()">No</button>
+                    <button class="bg-neutral-200 p-2 m-2 rounded-lg"
+                            (click)="clearAll()">Yes</button>
+                </div>
+
+                }
+            </div>
+        </div>
+
+
 
     </div>
     <!-- cols -->

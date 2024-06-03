@@ -93,4 +93,10 @@ export class SequencerService {
   changeGain(gainValue: number) {
     this.gain.gain.value = gainValue;
   }
+
+  clearAll() {
+    this.instrumentButtons.forEach((buttonArray) => {
+      buttonArray.forEach((btn) => (btn.isActive = false));
+    });
+  }
 }

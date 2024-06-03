@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { BeatButton, SequencerService } from '../../services/sequencer.service';
 import { NgClass } from '@angular/common';
-import { gainToDb } from 'tone';
 
 @Component({
   standalone: true,
@@ -15,6 +14,8 @@ export class SequencerComponent {
   instruments = this.sequencerSvc.synths;
 
   instrumentButtons = this.sequencerSvc.instrumentButtons;
+
+  clearAllPromptOpen = false;
 
   sequencerToggle() {
     this.sequencerSvc.sequencerToggle();
@@ -38,5 +39,17 @@ export class SequencerComponent {
 
   changeGain(gainValue: number) {
     this.sequencerSvc.changeGain(gainValue);
+  }
+
+  clearAll() {
+    this.sequencerSvc.clearAll();
+    this.closeClearAllPrompt();
+  }
+
+  openClearAllPrompt() {
+    this.clearAllPromptOpen = true;
+  }
+  closeClearAllPrompt() {
+    this.clearAllPromptOpen = false;
   }
 }
