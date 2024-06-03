@@ -1,6 +1,7 @@
 <div class="bg-neutral-700 p-2 flex flex-col justify-center">
-    <div class="flex justify-center">
-        <p class="text-white text-xl mb-2">octave: {{octave}}</p>
+    <div class="flex justify-center range-input mb-2">
+        <label class="text-white text-xl mr-2"
+               for="octaveIput">octave: {{octave}}</label>
         <input (input)="changeOctave(+octaveIput.value)"
                value="1"
                type="range"

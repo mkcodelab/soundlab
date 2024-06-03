@@ -1,7 +1,7 @@
 <h1 class="text-2xl text-white text-center">Soundlab Sequencer</h1>
 
 <div class="flex flex-col justify-center">
-    <div class="p-4">
+    <div class="p-4 range-input">
         <div>
 
             <input type="range"
@@ -27,7 +27,7 @@
 
         </div>
 
-        <button class="bg-neutral-200 p-2 m-2"
+        <button class="bg-neutral-200 p-2 m-2 rounded-lg"
                 (click)="sequencerToggle()">{{isPlaying ? 'Stop' : 'Start'}}</button>
 
     </div>
