@@ -45,10 +45,6 @@ export class SynthService {
     return this.effectSvc.getEffectParamValue(effectName, param);
   }
 
-  findEffectByName(effectName: EffectName): Effect {
-    return this.effectSvc.findEffectByName(effectName);
-  }
-
   changeWaveShape(waveshape: WaveShape) {
     this.synth.set({
       oscillator: {

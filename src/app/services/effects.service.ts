@@ -34,20 +34,22 @@ export class EffectsService {
     }
   }
 
-  findEffectByName(effectName: EffectName): Effect {
-    const i = this.effects.findIndex((effect) => effect.name === effectName);
-    return this.effects[i];
+  findEffectByName(effectName: EffectName): Effect | undefined {
+    return this.effects.find((effect) => effect.name === effectName);
   }
 
   setEffectParam(effectName: EffectName, param: string, value: number) {
-    this.findEffectByName(effectName).set({ [param]: value });
+    this.findEffectByName(effectName)?.set({ [param]: value });
   }
 
   getEffectParamValue(effectName: EffectName, param: string) {
-    return this.findEffectByName(effectName)[param as keyof Effect];
+    return this.findEffectByName(effectName)?.[param as keyof Effect];
   }
 
   toggleEffect(effectName: EffectName, to: boolean) {
-    this.findEffectByName(effectName).wet.value = to ? 1 : 0;
+    const effect = this.findEffectByName(effectName);
+    if (effect) {
+      effect.wet.value = to ? 1 : 0;
+    }
   }
 }
