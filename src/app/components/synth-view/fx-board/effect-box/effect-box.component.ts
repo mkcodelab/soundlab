@@ -1,6 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { EffectName } from '../../../../services/synth.service';
+import { EffectName } from '../../../../services/effects.service';
+// import { EffectName } from '../../../../services/synth.service';
 
 export interface DistortionConfig {
   distortion: number;
