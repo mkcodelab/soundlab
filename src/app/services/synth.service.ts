@@ -1,15 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import * as Tone from 'tone';
-
-export type Effect =
-  | Tone.FeedbackDelay
-  | Tone.Distortion
-  | Tone.Chorus
-  | Tone.Reverb;
+import { Effect, EffectName, EffectsService } from './effects.service';
 
 export type WaveShape = 'sine' | 'triangle' | 'square' | 'sawtooth';
-
-export type EffectName = 'Distortion' | 'FeedbackDelay' | 'Reverb' | 'Chorus';
 
 export type EnvelopeParams = 'attack' | 'decay' | 'sustain' | 'release';
 
@@ -19,25 +12,17 @@ export type EnvelopeParams = 'attack' | 'decay' | 'sustain' | 'release';
 export class SynthService {
   synth = new Tone.PolySynth(Tone.Synth);
 
-  effects: Effect[] = [
-    new Tone.FeedbackDelay(),
-    new Tone.Distortion(),
-    new Tone.Reverb(),
-    new Tone.Chorus(),
-  ];
+  effectSvc = inject(EffectsService);
+
+  effects: Effect[];
 
   constructor() {
+    this.effects = this.effectSvc.effects;
     // changing options of the polysynth voice (tone.synth)
     // in that way we can load values from preset
     this.initEnvelopeValues();
 
     this.synth.chain(...this.effects, Tone.getDestination());
-
-    // start chorus
-    (this.findEffectByName('Chorus') as Tone.Chorus).start();
-
-    // turn effect off at init
-    this.disableAllEffects();
   }
 
   holdNote(note: string) {
@@ -49,26 +34,19 @@ export class SynthService {
   }
 
   toggleEffect(effectName: EffectName, to: boolean) {
-    this.findEffectByName(effectName).wet.value = to ? 1 : 0;
-  }
-
-  disableAllEffects() {
-    for (let effect of this.effects) {
-      effect.set({ wet: 0 });
-    }
+    this.effectSvc.toggleEffect(effectName, to);
   }
 
   setEffectParam(effectName: EffectName, param: string, value: number) {
-    this.findEffectByName(effectName).set({ [param]: value });
+    this.effectSvc.setEffectParam(effectName, param, value);
   }
 
   getEffectParamValue(effectName: EffectName, param: string) {
-    return this.findEffectByName(effectName)[param as keyof Effect];
+    return this.effectSvc.getEffectParamValue(effectName, param);
   }
 
   findEffectByName(effectName: EffectName): Effect {
-    const i = this.effects.findIndex((effect) => effect.name === effectName);
-    return this.effects[i];
+    return this.effectSvc.findEffectByName(effectName);
   }
 
   changeWaveShape(waveshape: WaveShape) {

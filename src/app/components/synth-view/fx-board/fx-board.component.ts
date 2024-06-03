@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import {
-  EffectName,
+  //   EffectName,
   SynthService,
   WaveShape,
 } from '../../../services/synth.service';
@@ -14,6 +14,7 @@ import {
   EnvelopeInputData,
 } from './envelope/envelope.component';
 import { Time } from 'tone/build/esm/core/type/Units';
+import { EffectName } from '../../../services/effects.service';
 
 export interface EnvelopeValues {
   attack: Time;
