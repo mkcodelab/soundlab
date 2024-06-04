@@ -1,6 +1,11 @@
 $border-width: 4px;
 
-@use "../../../../styles.scss";
+// @use "../../../../styles.scss";
+@mixin groove {
+  border-width: 3px;
+  border-style: groove;
+  border-color: #ccc;
+}
 
 :host::ng-deep {
   .border-emboss {
@@ -11,7 +16,7 @@ $border-width: 4px;
   }
 
   .border-groove {
-    @include styles.groove;
+    @include groove;
   }
 
   .label-white {
@@ -30,7 +35,7 @@ $border-width: 4px;
 
   .waveform-radio {
     appearance: none;
-    @include styles.groove;
+    @include groove;
     width: 20px;
     height: 20px;
     transition: background-color 0.3s ease;
