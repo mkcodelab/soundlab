@@ -15,6 +15,17 @@ interface Beat {
   selector: 'sequencer',
   templateUrl: './sequencer.component.html',
   imports: [NgClass],
+  styles: `
+    .instrument-btn-active {
+        background: hsl(120, 100%, 85%);
+        box-shadow: 0 0 10px 5px hsl(120, 100%, 50%);
+    }
+
+    .measure-active {
+        background: hsl(60, 100%, 85%);
+        box-shadow: 0 0 10px 5px hsl(60, 100%, 50%);
+    }
+  `,
 })
 export class SequencerComponent {
   sequencerSvc = inject(SequencerService);

@@ -61,7 +61,9 @@
             <div class="m-1 p-1 h-10"></div>
 
             @for(instrument of instruments; track instrument) {
-            <span class="p-1 m-1 h-10 rounded-lg bg-neutral-200 block text-center">{{instrument.name}}</span>
+            <span class="p-1 m-1 h-10 rounded-lg bg-neutral-200 block text-center align-middle font-bold">
+                {{instrument.name}}
+            </span>
             }
 
         </div>
@@ -71,8 +73,8 @@
             <div class="flex justify-center">
                 @for(beat of beats; track beat) {
                 <div class="p-1 m-1 w-10 h-10 rounded-lg text-center"
-                     [ngClass]="isCurrentBeatActive(beat)? 'bg-yellow-500' : 'bg-neutral-200'">
-                    {{beat.id}}
+                     [ngClass]="isCurrentBeatActive(beat)? 'measure-active' : 'bg-neutral-200'">
+                    <span class="font-bold align-middle">{{beat.id}}</span>
                 </div>
                 }
             </div>
@@ -84,9 +86,9 @@
                 @for(beatButton of instrument; track beatButton) {
 
                 <button class="p-1 m-1 w-10 h-10 rounded-lg text-center"
-                        [ngClass]="beatButton.isActive? 'bg-green-500' : 'bg-neutral-200'"
+                        [ngClass]="beatButton.isActive? 'instrument-btn-active' : 'bg-neutral-200'"
                         (click)="toggleActiveBeat(beatButton)">
-                    {{beatButton.id}}
+                    <!-- {{beatButton.id}} -->
                 </button>
 
                 }
