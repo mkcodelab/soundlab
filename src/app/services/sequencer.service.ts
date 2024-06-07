@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import * as Tone from 'tone';
 import { Time } from 'tone/build/esm/core/type/Units';
 
-export class BeatButton {
+export class InstrumentButton {
   constructor(public id: number) {}
   isActive = false;
 }
@@ -26,11 +27,15 @@ export class SequencerService {
 
   numberOfBeats = 16;
 
+  //   has to be observable
   currentBeat = 0;
+  private currentBeat$: BehaviorSubject<number> = new BehaviorSubject(0);
+
+  currentBeatMeasure: Observable<number> = this.currentBeat$.asObservable();
 
   isPlaying = false;
 
-  instrumentButtons: BeatButton[][] = [];
+  instrumentButtons: InstrumentButton[][] = [];
 
   //   change synths for some samples
   synths = [
@@ -40,6 +45,9 @@ export class SequencerService {
     new Tone.PluckSynth(),
   ];
 
+  //   add gain node to every single synth/instrument
+  //   add mute method, that will set instrument gain value to 0
+  // add button with mute method to sequencer component
   gain = new Tone.Gain(0.5);
 
   start() {
@@ -57,17 +65,17 @@ export class SequencerService {
     return this.transport.bpm.value;
   }
 
-  toggleActiveBeat(beatBtn: BeatButton) {
-    beatBtn.isActive = !beatBtn.isActive;
+  toggleActiveBeat(instrumentBtn: InstrumentButton) {
+    instrumentBtn.isActive = !instrumentBtn.isActive;
   }
 
   initButtons() {
     this.synths.forEach(() => {
-      const beatButtonArr = [];
+      const instrumentBtnArr = [];
       for (let i = 0; i < this.numberOfBeats; i++) {
-        beatButtonArr.push(new BeatButton(i));
+        instrumentBtnArr.push(new InstrumentButton(i));
       }
-      this.instrumentButtons.push(beatButtonArr);
+      this.instrumentButtons.push(instrumentBtnArr);
     });
   }
 
@@ -87,6 +95,9 @@ export class SequencerService {
       }
     });
 
+    // send current beat
+    this.currentBeat$.next(this.currentBeat);
+    // update current beat
     this.currentBeat = (this.currentBeat + 1) % this.numberOfBeats;
   }
 

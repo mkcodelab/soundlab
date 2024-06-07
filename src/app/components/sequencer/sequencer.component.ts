@@ -1,6 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { BeatButton, SequencerService } from '../../services/sequencer.service';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import {
+  InstrumentButton,
+  SequencerService,
+} from '../../services/sequencer.service';
 import { NgClass } from '@angular/common';
+import { Subscription } from 'rxjs';
+
+interface Beat {
+  id: number;
+}
 
 @Component({
   standalone: true,
@@ -11,17 +19,36 @@ import { NgClass } from '@angular/common';
 export class SequencerComponent {
   sequencerSvc = inject(SequencerService);
 
+  cdr = inject(ChangeDetectorRef);
+
   instruments = this.sequencerSvc.synths;
 
   instrumentButtons = this.sequencerSvc.instrumentButtons;
 
   clearAllPromptOpen = false;
 
+  beats: Beat[] = [];
+
+  beatMeasureSubscription: Subscription;
+
+  currentBeat = 0;
+
+  ngOnInit() {
+    this.createBeats();
+
+    // subscribe to beat measure
+    this.beatMeasureSubscription =
+      this.sequencerSvc.currentBeatMeasure.subscribe((value) => {
+        this.currentBeat = value;
+        this.cdr.detectChanges();
+      });
+  }
+
   sequencerToggle() {
     this.sequencerSvc.sequencerToggle();
   }
 
-  toggleActiveBeat(beatBtn: BeatButton) {
+  toggleActiveBeat(beatBtn: InstrumentButton) {
     this.sequencerSvc.toggleActiveBeat(beatBtn);
   }
 
@@ -51,5 +78,19 @@ export class SequencerComponent {
   }
   closeClearAllPrompt() {
     this.clearAllPromptOpen = false;
+  }
+
+  createBeats() {
+    for (let i = 0; i < this.sequencerSvc.numberOfBeats; i++) {
+      this.beats.push({ id: i });
+    }
+  }
+
+  isCurrentBeatActive(beat: Beat) {
+    return beat.id === this.currentBeat;
+  }
+
+  ngOnDestroy() {
+    this.beatMeasureSubscription.unsubscribe();
   }
 }

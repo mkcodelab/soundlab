@@ -55,7 +55,11 @@
     <!-- cols -->
     <div class="flex justify-center">
 
+        <!-- instrument name column -->
         <div class="flex flex-col">
+            <!-- just a spacing -->
+            <div class="m-1 p-1 h-10"></div>
+
             @for(instrument of instruments; track instrument) {
             <span class="p-1 m-1 h-10 rounded-lg bg-neutral-200 block text-center">{{instrument.name}}</span>
             }
@@ -63,6 +67,17 @@
         </div>
 
         <div>
+            <!-- beats measure -->
+            <div class="flex justify-center">
+                @for(beat of beats; track beat) {
+                <div class="p-1 m-1 w-10 h-10 rounded-lg text-center"
+                     [ngClass]="isCurrentBeatActive(beat)? 'bg-yellow-500' : 'bg-neutral-200'">
+                    {{beat.id}}
+                </div>
+                }
+            </div>
+
+            <!-- instrument buttons -->
             @for(instrument of instrumentButtons; track instrument) {
             <div class="flex justify-center">
 
