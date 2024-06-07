@@ -3,6 +3,30 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import * as Tone from 'tone';
 import { Time } from 'tone/build/esm/core/type/Units';
 
+export type SynthType =
+  | Tone.Synth
+  | Tone.MembraneSynth
+  | Tone.PluckSynth
+  | Tone.MetalSynth
+  | Tone.Sampler;
+
+export class Instrument {
+  public gain: Tone.Gain;
+  constructor(
+    public name: string,
+    public id: number,
+    public note: string,
+    private synthType: SynthType
+  ) {
+    this.gain = new Tone.Gain(0.5);
+    this.synthType.connect(this.gain);
+  }
+
+  connect(destination: Tone.InputNode) {
+    this.gain.connect(destination);
+  }
+}
+
 export class InstrumentButton {
   constructor(public id: number) {}
   isActive = false;
@@ -15,9 +39,9 @@ export class SequencerService {
   transport = Tone.getTransport();
 
   constructor() {
-    this.synths.forEach((synth) => synth.connect(this.gain));
+    this.instruments.forEach((synth) => synth.connect(this.masterGain));
 
-    this.gain.toDestination();
+    this.masterGain.toDestination();
     this.initButtons();
     this.setBpm(120);
     this.transport.scheduleRepeat((time) => {
@@ -28,7 +52,7 @@ export class SequencerService {
   numberOfBeats = 16;
 
   //   has to be observable
-  currentBeat = 0;
+  private currentBeat = 0;
   private currentBeat$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   currentBeatMeasure: Observable<number> = this.currentBeat$.asObservable();
@@ -38,7 +62,7 @@ export class SequencerService {
   instrumentButtons: InstrumentButton[][] = [];
 
   //   change synths for some samples
-  synths = [
+  instruments = [
     new Tone.Synth({ oscillator: { type: 'square' } }),
     new Tone.MetalSynth(),
     new Tone.MembraneSynth({ oscillator: { type: 'sawtooth' } }),
@@ -48,7 +72,7 @@ export class SequencerService {
   //   add gain node to every single synth/instrument
   //   add mute method, that will set instrument gain value to 0
   // add button with mute method to sequencer component
-  gain = new Tone.Gain(0.5);
+  masterGain = new Tone.Gain(0.5);
 
   start() {
     this.transport.start();
@@ -70,7 +94,7 @@ export class SequencerService {
   }
 
   initButtons() {
-    this.synths.forEach(() => {
+    this.instruments.forEach(() => {
       const instrumentBtnArr = [];
       for (let i = 0; i < this.numberOfBeats; i++) {
         instrumentBtnArr.push(new InstrumentButton(i));
@@ -85,7 +109,7 @@ export class SequencerService {
   }
   repeat(time: Time) {
     this.instrumentButtons.forEach((row, index) => {
-      let synth = this.synths[index];
+      let synth = this.instruments[index];
 
       let button = row[this.currentBeat];
 
@@ -102,7 +126,7 @@ export class SequencerService {
   }
 
   changeGain(gainValue: number) {
-    this.gain.gain.value = gainValue;
+    this.masterGain.gain.value = gainValue;
   }
 
   clearAll() {

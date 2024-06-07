@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import {
   InstrumentButton,
   SequencerService,
@@ -27,12 +33,12 @@ interface Beat {
     }
   `,
 })
-export class SequencerComponent {
+export class SequencerComponent implements OnInit, OnDestroy {
   sequencerSvc = inject(SequencerService);
 
   cdr = inject(ChangeDetectorRef);
 
-  instruments = this.sequencerSvc.synths;
+  instruments = this.sequencerSvc.instruments;
 
   instrumentButtons = this.sequencerSvc.instrumentButtons;
 
@@ -91,6 +97,7 @@ export class SequencerComponent {
     this.clearAllPromptOpen = false;
   }
 
+  //   creates measure beats
   createBeats() {
     for (let i = 0; i < this.sequencerSvc.numberOfBeats; i++) {
       this.beats.push({ id: i });
