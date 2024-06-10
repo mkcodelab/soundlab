@@ -3,10 +3,25 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import * as Tone from 'tone';
 import { Time } from 'tone/build/esm/core/type/Units';
 import { SequencerInstrument } from '../models/instrument/instrument';
+import { ButtonNotes } from '../shared/consts';
 
 export class InstrumentButton {
   constructor(public id: number) {}
   isActive = false;
+  private _note = 'C';
+  private octave = 1;
+
+  selectNote(note: ButtonNotes) {
+    this._note = note;
+  }
+
+  selectOctave(octave: number) {
+    this.octave = octave;
+  }
+
+  get note() {
+    return this._note + this.octave;
+  }
 }
 
 @Injectable({
@@ -102,7 +117,17 @@ export class SequencerService {
       let button = row[this.currentBeat];
 
       if (button.isActive) {
-        instrument.synthType.triggerAttackRelease(instrument.note, '8n', time);
+        // add note to button
+        if (button.note) {
+          instrument.synthType.triggerAttackRelease(button.note, '8n', time);
+        } else {
+          instrument.synthType.triggerAttackRelease(
+            instrument.note,
+            '8n',
+            time
+          );
+        }
+        // instrument.synthType.triggerAttackRelease(instrument.note, '8n', time);
       }
     });
 

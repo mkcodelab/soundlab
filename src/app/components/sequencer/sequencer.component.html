@@ -66,8 +66,6 @@
                     {{instrument.name}}
                 </span>
 
-                <!-- add note dropdown here -->
-
                 <!-- mute button -->
                 <button class="w-9 p-1 rounded-lg bg-neutral-400"
                         title="mute"
@@ -95,11 +93,9 @@
 
                 @for(beatButton of instrument; track beatButton) {
 
-                <button class="p-1 m-1 w-10 h-10 rounded-lg text-center"
-                        [ngClass]="beatButton.isActive? 'instrument-btn-active' : 'bg-neutral-200'"
-                        (click)="toggleActiveBeat(beatButton)">
-                    <!-- {{beatButton.id}} -->
-                </button>
+                <!-- beat button, with note dropdown / octave select on right click -->
+                <beat-button [instrumentButton]="beatButton"
+                             (toggleActiveBeat)="toggleActiveBeat($event)"></beat-button>
 
                 }
 

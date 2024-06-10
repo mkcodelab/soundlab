@@ -1,0 +1,28 @@
+<button class="p-1 m-1 w-10 h-10 rounded-lg text-center"
+        [ngClass]="instrumentButton.isActive? 'instrument-btn-active' : 'bg-neutral-200'"
+        (click)="toggle()">
+    @if(instrumentButton.isActive) {
+    <span>{{instrumentButton.note}}</span>
+    }
+</button>
+
+<div class="absolute"
+     [hidden]="!notesMenuOpen">
+    <div class="flex">
+        <select name="notes"
+                (change)="noteSelection(noteSelect.value)"
+                #noteSelect>
+            @for(note of notesOptions; track note) {
+            <option [value]="note">{{note}}</option>
+            }
+        </select>
+
+        <input type="number"
+               min="1"
+               max="6"
+               #octaveInput
+               (change)="selectOctave(octaveInput.value)">
+    </div>
+
+
+</div>

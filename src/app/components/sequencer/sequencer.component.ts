@@ -12,6 +12,8 @@ import {
 import { NgClass } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SequencerInstrument } from '../../models/instrument/instrument';
+import { BeatButtonComponent } from './beat-button/beat-button.component';
+
 interface Beat {
   id: number;
 }
@@ -20,13 +22,8 @@ interface Beat {
   standalone: true,
   selector: 'sequencer',
   templateUrl: './sequencer.component.html',
-  imports: [NgClass],
+  imports: [NgClass, BeatButtonComponent],
   styles: `
-    .instrument-btn-active {
-        background: hsl(120, 100%, 85%);
-        box-shadow: 0 0 10px 5px hsl(120, 100%, 50%);
-    }
-
     .measure-active {
         background: hsl(60, 100%, 85%);
         box-shadow: 0 0 10px 5px hsl(60, 100%, 50%);
