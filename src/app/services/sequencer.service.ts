@@ -2,40 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as Tone from 'tone';
 import { Time } from 'tone/build/esm/core/type/Units';
-
-export type SynthType =
-  | Tone.Synth
-  | Tone.MembraneSynth
-  | Tone.PluckSynth
-  | Tone.MetalSynth
-  | Tone.Sampler;
-
-export class Instrument {
-  public gain: Tone.Gain;
-  constructor(
-    public name: string,
-    public id: number,
-    public note: string,
-    public synthType: SynthType,
-    public muted = false
-  ) {
-    this.gain = new Tone.Gain(0.5);
-    this.synthType.connect(this.gain);
-  }
-
-  connect(destination: Tone.InputNode) {
-    this.gain.connect(destination);
-  }
-
-  mute() {
-    this.gain.gain.value = 0;
-    this.muted = true;
-  }
-  unmute() {
-    this.gain.gain.value = 1;
-    this.muted = false;
-  }
-}
+import { SequencerInstrument } from '../models/instrument/instrument';
 
 export class InstrumentButton {
   constructor(public id: number) {}
@@ -63,7 +30,6 @@ export class SequencerService {
 
   numberOfBeats = 16;
 
-  //   has to be observable
   private currentBeat = 0;
   private currentBeat$: BehaviorSubject<number> = new BehaviorSubject(0);
 
@@ -75,23 +41,23 @@ export class SequencerService {
 
   //   change synths for some samples
   instruments = [
-    new Instrument(
+    new SequencerInstrument(
       'SquareOsc',
       0,
       'C4',
       new Tone.Synth({ oscillator: { type: 'square' } })
     ),
-    new Instrument('Crash', 1, 'C1', new Tone.MetalSynth()),
-    new Instrument(
+    new SequencerInstrument('Crash', 1, 'C1', new Tone.MetalSynth()),
+    new SequencerInstrument(
       'Membrane',
       2,
       'C1',
       new Tone.MembraneSynth({ oscillator: { type: 'sawtooth' } })
     ),
-    new Instrument('Pluck', 3, 'C1', new Tone.PluckSynth()),
-    new Instrument('Instrument test', 4, 'A4', new Tone.Synth()),
-    new Instrument('highPitch', 5, 'C8', new Tone.Synth()),
-    new Instrument('lowDrum', 6, 'C1', new Tone.MembraneSynth()),
+    new SequencerInstrument('Pluck', 3, 'C1', new Tone.PluckSynth()),
+    new SequencerInstrument('Instrument test', 4, 'A4', new Tone.Synth()),
+    new SequencerInstrument('highPitch', 5, 'C8', new Tone.Synth()),
+    new SequencerInstrument('lowDrum', 6, 'C1', new Tone.MembraneSynth()),
   ];
 
   masterGain = new Tone.Gain(0.5);
@@ -136,16 +102,7 @@ export class SequencerService {
       let button = row[this.currentBeat];
 
       if (button.isActive) {
-        if (instrument instanceof Instrument) {
-          instrument.synthType.triggerAttackRelease(
-            instrument.note,
-            '8n',
-            time
-          );
-        } else {
-          // instrument.triggerAttackRelease('D4', '8n', time);
-          console.log(instrument);
-        }
+        instrument.synthType.triggerAttackRelease(instrument.note, '8n', time);
       }
     });
 

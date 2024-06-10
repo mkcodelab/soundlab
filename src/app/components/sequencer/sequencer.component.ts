@@ -6,13 +6,12 @@ import {
   inject,
 } from '@angular/core';
 import {
-  Instrument,
   InstrumentButton,
   SequencerService,
 } from '../../services/sequencer.service';
 import { NgClass } from '@angular/common';
 import { Subscription } from 'rxjs';
-
+import { SequencerInstrument } from '../../models/instrument/instrument';
 interface Beat {
   id: number;
 }
@@ -109,7 +108,7 @@ export class SequencerComponent implements OnInit, OnDestroy {
     return beat.id === this.currentBeat;
   }
 
-  instrumentToggle(instrument: Instrument) {
+  instrumentToggle(instrument: SequencerInstrument) {
     instrument.muted ? instrument.unmute() : instrument.mute();
   }
 
