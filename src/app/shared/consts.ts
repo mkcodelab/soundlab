@@ -1,18 +1,6 @@
-export type ButtonNotes =
-  | 'C'
-  | 'C#'
-  | 'D'
-  | 'D#'
-  | 'E'
-  | 'F'
-  | 'F#'
-  | 'G'
-  | 'G#'
-  | 'A'
-  | 'A#'
-  | 'B';
+export type ButtonNotes = (typeof NOTES)[number];
 
-export const NOTES: ButtonNotes[] = [
+export const NOTES = [
   'C',
   'C#',
   'D',
@@ -25,4 +13,4 @@ export const NOTES: ButtonNotes[] = [
   'A',
   'A#',
   'B',
-];
+] as const;

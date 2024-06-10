@@ -8,12 +8,13 @@ import {
 } from '@angular/core';
 import { InstrumentButton } from '../../../services/sequencer.service';
 import { ButtonNotes, NOTES } from '../../../shared/consts';
+import { ClickOutsideDirective } from '../../../directives/clickOutside.directive';
 
 @Component({
   standalone: true,
   selector: 'beat-button',
   templateUrl: './beat-button.component.html',
-  imports: [NgClass],
+  imports: [NgClass, ClickOutsideDirective],
   styles: `
    .instrument-btn-active {
         background: hsl(120, 100%, 85%);
@@ -28,7 +29,7 @@ export class BeatButtonComponent {
 
   notesMenuOpen = false;
 
-  notesOptions: ButtonNotes[] = NOTES;
+  notesOptions = NOTES;
 
   //   right click to open note dropdown menu
   @HostListener('contextmenu')
