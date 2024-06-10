@@ -61,9 +61,19 @@
             <div class="m-1 p-1 h-10"></div>
 
             @for(instrument of instruments; track instrument) {
-            <span class="p-1 m-1 h-10 rounded-lg bg-neutral-200 block text-center align-middle font-bold">
-                {{instrument.name}}
-            </span>
+            <div class="p-1 m-1 h-10 rounded-lg bg-neutral-200 flex justify-between">
+                <span class="block text-center align-middle font-bold">
+                    {{instrument.name}}
+                </span>
+
+                <!-- add note dropdown here -->
+
+                <!-- mute button -->
+                <button class="w-9 p-1 rounded-lg bg-neutral-400"
+                        title="mute"
+                        (click)="instrumentToggle(instrument)">{{instrument.muted? 'O': 'I'}}</button>
+
+            </div>
             }
 
         </div>

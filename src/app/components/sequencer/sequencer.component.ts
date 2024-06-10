@@ -6,6 +6,7 @@ import {
   inject,
 } from '@angular/core';
 import {
+  Instrument,
   InstrumentButton,
   SequencerService,
 } from '../../services/sequencer.service';
@@ -106,6 +107,10 @@ export class SequencerComponent implements OnInit, OnDestroy {
 
   isCurrentBeatActive(beat: Beat) {
     return beat.id === this.currentBeat;
+  }
+
+  instrumentToggle(instrument: Instrument) {
+    instrument.muted ? instrument.unmute() : instrument.mute();
   }
 
   ngOnDestroy() {

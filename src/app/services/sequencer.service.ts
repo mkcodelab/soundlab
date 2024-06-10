@@ -16,7 +16,8 @@ export class Instrument {
     public name: string,
     public id: number,
     public note: string,
-    private synthType: SynthType
+    public synthType: SynthType,
+    public muted = false
   ) {
     this.gain = new Tone.Gain(0.5);
     this.synthType.connect(this.gain);
@@ -24,6 +25,15 @@ export class Instrument {
 
   connect(destination: Tone.InputNode) {
     this.gain.connect(destination);
+  }
+
+  mute() {
+    this.gain.gain.value = 0;
+    this.muted = true;
+  }
+  unmute() {
+    this.gain.gain.value = 1;
+    this.muted = false;
   }
 }
 
@@ -39,7 +49,9 @@ export class SequencerService {
   transport = Tone.getTransport();
 
   constructor() {
-    this.instruments.forEach((synth) => synth.connect(this.masterGain));
+    this.instruments.forEach((instrument) =>
+      instrument.connect(this.masterGain)
+    );
 
     this.masterGain.toDestination();
     this.initButtons();
@@ -63,15 +75,25 @@ export class SequencerService {
 
   //   change synths for some samples
   instruments = [
-    new Tone.Synth({ oscillator: { type: 'square' } }),
-    new Tone.MetalSynth(),
-    new Tone.MembraneSynth({ oscillator: { type: 'sawtooth' } }),
-    new Tone.PluckSynth(),
+    new Instrument(
+      'SquareOsc',
+      0,
+      'C4',
+      new Tone.Synth({ oscillator: { type: 'square' } })
+    ),
+    new Instrument('Crash', 1, 'C1', new Tone.MetalSynth()),
+    new Instrument(
+      'Membrane',
+      2,
+      'C1',
+      new Tone.MembraneSynth({ oscillator: { type: 'sawtooth' } })
+    ),
+    new Instrument('Pluck', 3, 'C1', new Tone.PluckSynth()),
+    new Instrument('Instrument test', 4, 'A4', new Tone.Synth()),
+    new Instrument('highPitch', 5, 'C8', new Tone.Synth()),
+    new Instrument('lowDrum', 6, 'C1', new Tone.MembraneSynth()),
   ];
 
-  //   add gain node to every single synth/instrument
-  //   add mute method, that will set instrument gain value to 0
-  // add button with mute method to sequencer component
   masterGain = new Tone.Gain(0.5);
 
   start() {
@@ -109,13 +131,21 @@ export class SequencerService {
   }
   repeat(time: Time) {
     this.instrumentButtons.forEach((row, index) => {
-      let synth = this.instruments[index];
+      let instrument = this.instruments[index];
 
       let button = row[this.currentBeat];
 
       if (button.isActive) {
-        // synth.triggerAttackRelease(note.note, '8n', time)
-        synth.triggerAttackRelease('D4', '8n', time);
+        if (instrument instanceof Instrument) {
+          instrument.synthType.triggerAttackRelease(
+            instrument.note,
+            '8n',
+            time
+          );
+        } else {
+          // instrument.triggerAttackRelease('D4', '8n', time);
+          console.log(instrument);
+        }
       }
     });
 
