@@ -27,6 +27,8 @@ export class BeatButtonComponent {
 
   @Output() toggleActiveBeat = new EventEmitter();
 
+  @Output() rightClick = new EventEmitter();
+
   notesMenuOpen = false;
 
   notesOptions = NOTES;
@@ -34,6 +36,7 @@ export class BeatButtonComponent {
   //   right click to open note dropdown menu
   @HostListener('contextmenu')
   onClick() {
+    this.rightClick.emit();
     this.openNotesMenu();
     // prevents opening contextmenu
     return false;

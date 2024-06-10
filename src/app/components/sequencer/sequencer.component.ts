@@ -1,8 +1,12 @@
 import {
   ChangeDetectorRef,
   Component,
+  HostListener,
   OnDestroy,
   OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
   inject,
 } from '@angular/core';
 import {
@@ -46,6 +50,26 @@ export class SequencerComponent implements OnInit, OnDestroy {
   beatMeasureSubscription: Subscription;
 
   currentBeat = 0;
+
+  // off-click logic cannot be done with off-click directive, because it fires every off-click x number of buttons...
+
+  //   https://stackoverflow.com/questions/40107008/detect-click-outside-angular-component/60014879#60014879
+  //   https://stackoverflow.com/questions/40107008/detect-click-outside-angular-component
+  // problem with many instances of HostListener, like when using clickOutsideDirective.
+
+  //   solved in a different, simpler way.
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent) {
+    const elem = event.target as HTMLElement;
+
+    if (elem.classList.contains('notes-menu-elem')) {
+      return;
+    }
+    this.closeAllNotesMenus();
+  }
+
+  @ViewChildren(BeatButtonComponent)
+  beatButtons: QueryList<BeatButtonComponent>;
 
   ngOnInit() {
     this.createBeats();
@@ -107,6 +131,10 @@ export class SequencerComponent implements OnInit, OnDestroy {
 
   instrumentToggle(instrument: SequencerInstrument) {
     instrument.muted ? instrument.unmute() : instrument.mute();
+  }
+
+  closeAllNotesMenus() {
+    this.beatButtons.forEach((button) => button.closeNotesMenu());
   }
 
   ngOnDestroy() {

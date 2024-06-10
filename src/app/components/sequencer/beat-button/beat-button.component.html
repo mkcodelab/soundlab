@@ -1,15 +1,17 @@
-<button class="p-1 m-1 w-10 h-10 rounded-lg text-center"
+<button class="p-1 m-1 w-10 h-10 rounded-lg text-center beat-button"
         [ngClass]="instrumentButton.isActive? 'instrument-btn-active' : 'bg-neutral-200'"
         (click)="toggle()">
     @if(instrumentButton.isActive) {
-    <span>{{instrumentButton.note}}</span>
+    <span class="text-white font-bold">{{instrumentButton.note}}</span>
     }
 </button>
 
 <div class="absolute"
      [hidden]="!notesMenuOpen">
     <div class="flex">
+        <!-- elements needs to have notes-menu-elem class due to offClick logic -->
         <select name="notes"
+                class="notes-menu-elem"
                 (change)="noteSelection(noteSelect.value)"
                 #noteSelect>
             @for(note of notesOptions; track note) {
@@ -18,6 +20,7 @@
         </select>
 
         <input type="number"
+               class="notes-menu-elem"
                min="1"
                max="6"
                #octaveInput

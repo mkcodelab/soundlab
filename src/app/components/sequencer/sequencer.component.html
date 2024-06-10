@@ -95,7 +95,8 @@
 
                 <!-- beat button, with note dropdown / octave select on right click -->
                 <beat-button [instrumentButton]="beatButton"
-                             (toggleActiveBeat)="toggleActiveBeat($event)"></beat-button>
+                             (toggleActiveBeat)="toggleActiveBeat($event)"
+                             (rightClick)="closeAllNotesMenus()"></beat-button>
 
                 }
 
