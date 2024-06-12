@@ -58,6 +58,8 @@ export class SequencerComponent implements OnInit, OnDestroy {
   // problem with many instances of HostListener, like when using clickOutsideDirective.
 
   //   solved in a different, simpler way.
+  //   added listener for click event on parent component, (could be done also on app component)
+  // prevent closing menus when clicking on menu elements containing notes-menu-elem class
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
     const elem = event.target as HTMLElement;

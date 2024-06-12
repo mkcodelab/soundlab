@@ -34,6 +34,7 @@ export class BeatButtonComponent {
   notesOptions = NOTES;
 
   //   right click to open note dropdown menu
+  //   emit event first, to close all opened menus from parent level, then open one that we clicked on.
   @HostListener('contextmenu')
   onClick() {
     this.rightClick.emit();
