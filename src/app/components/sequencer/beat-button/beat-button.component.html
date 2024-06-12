@@ -1,31 +1,41 @@
-<button class="p-1 m-1 w-10 h-10 rounded-lg text-center beat-button"
-        [ngClass]="instrumentButton.isActive? 'instrument-btn-active' : 'bg-neutral-200'"
-        (click)="toggle()">
-    @if(instrumentButton.isActive) {
-    <span class="text-white font-bold">{{instrumentButton.note}}</span>
-    }
-</button>
+<div class="relative">
 
-<div class="absolute"
-     [hidden]="!notesMenuOpen">
-    <div class="flex">
-        <!-- elements needs to have notes-menu-elem class due to offClick logic -->
-        <select name="notes"
-                class="notes-menu-elem"
-                (change)="noteSelection(noteSelect.value)"
-                #noteSelect>
-            @for(note of notesOptions; track note) {
-            <option [value]="note">{{note}}</option>
+    <button class="p-1 m-1 w-10 h-10 rounded-lg text-center beat-button"
+            title="click to toggle, right-click to open note selection menu"
+            [ngClass]="instrumentButton.isActive? 'instrument-btn-active' : 'bg-neutral-200'"
+            (click)="toggle()">
+        @if(instrumentButton.isActive) {
+        <span class="text-white font-bold">{{instrumentButton.note}}</span>
+        }
+    </button>
+
+    <!-- elements inside needs to have notes-menu-elem class due to offClick logic -->
+
+    <!-- todo: animation on opening menu -->
+    <!-- note-menu-hidden -->
+    <!-- [class.note-menu-show]="notesMenuOpen" -->
+
+    <div class="absolute top-1/2 left-1/2"
+         [hidden]="!notesMenuOpen">
+
+        <radial-menu [radius]='100'
+                     [innerRadius]="50"
+                     [hasBackdrop]="true"
+                     class="notes-menu-elem">
+            @for(note of notesOptions; track note){
+
+            <button #outerCircleItems
+                    class="notes-menu-elem text-white bg-neutral-600 hover:bg-neutral-400 rounded-full w-10 h-10"
+                    (click)="noteSelection(note)">{{note}}</button>
             }
-        </select>
 
-        <input type="number"
-               class="notes-menu-elem"
-               min="1"
-               max="6"
-               #octaveInput
-               (change)="selectOctave(octaveInput.value)">
+            @for(octave of octaves; track octave) {
+            <button #innerCircleItems
+                    class="notes-menu-elem text-white bg-neutral-600 hover:bg-neutral-400 rounded-full w-10 h-10"
+                    (click)="selectOctave(octave)">{{octave}}</button>
+            }
+
+        </radial-menu>
+
     </div>
-
-
 </div>
