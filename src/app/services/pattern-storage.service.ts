@@ -14,11 +14,16 @@ export class PatternStorageService {
 
   localStorageKey = 'sequencer_patterns';
 
+  constructor() {
+    this.initPatterns();
+  }
+
   //   all saved patterns
   private _patterns: Pattern[] = [];
 
   addPattern(name: string, data: InstrumentButton[][]) {
     this._patterns.push({ name, pattern: data });
+    this.savePatterns();
   }
 
   get patterns() {
@@ -38,5 +43,12 @@ export class PatternStorageService {
   savePatterns() {
     const data = JSON.stringify(this._patterns);
     this.localStorageSvc.setItem(this.localStorageKey, data);
+  }
+
+  initPatterns() {
+    const patterns = this.loadPatterns();
+    if (patterns) {
+      this._patterns = patterns;
+    }
   }
 }
