@@ -5,7 +5,6 @@ import {
   OnDestroy,
   OnInit,
   QueryList,
-  ViewChild,
   ViewChildren,
   inject,
 } from '@angular/core';
@@ -18,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { SequencerInstrument } from '../../models/instrument/instrument';
 import { BeatButtonComponent } from './beat-button/beat-button.component';
 import { Pattern } from '../../services/pattern-storage.service';
+import { SequencerMenuComponent } from './sequencer-menu/sequencer-menu.component';
 
 interface Beat {
   id: number;
@@ -27,7 +27,7 @@ interface Beat {
   standalone: true,
   selector: 'sequencer',
   templateUrl: './sequencer.component.html',
-  imports: [NgClass, BeatButtonComponent],
+  imports: [NgClass, BeatButtonComponent, SequencerMenuComponent],
   styles: `
     .measure-active {
         background: hsl(60, 100%, 85%);
@@ -51,10 +51,6 @@ export class SequencerComponent implements OnInit, OnDestroy {
   beatMeasureSubscription: Subscription;
 
   currentBeat = 0;
-
-  //   todo: move prompts to sequencer-menu component
-  savePatternPromptOpen = false;
-  loadPatternPromptOpen = false;
 
   // off-click logic cannot be done with off-click directive, because it fires every off-click x number of buttons...
 
@@ -89,16 +85,8 @@ export class SequencerComponent implements OnInit, OnDestroy {
       });
   }
 
-  sequencerToggle() {
-    this.sequencerSvc.sequencerToggle();
-  }
-
   toggleActiveBeat(beatBtn: InstrumentButton) {
     this.sequencerSvc.toggleActiveBeat(beatBtn);
-  }
-
-  get isPlaying(): boolean {
-    return this.sequencerSvc.isPlaying;
   }
 
   setBpm(bpm: number) {
@@ -111,18 +99,6 @@ export class SequencerComponent implements OnInit, OnDestroy {
 
   changeGain(gainValue: number) {
     this.sequencerSvc.changeGain(gainValue);
-  }
-
-  clearAll() {
-    this.sequencerSvc.clearAll();
-    this.closeClearAllPrompt();
-  }
-
-  openClearAllPrompt() {
-    this.clearAllPromptOpen = true;
-  }
-  closeClearAllPrompt() {
-    this.clearAllPromptOpen = false;
   }
 
   //   creates measure beats
@@ -144,35 +120,10 @@ export class SequencerComponent implements OnInit, OnDestroy {
     this.beatButtons.forEach((button) => button.closeNotesMenu());
   }
 
-  openSavePatternPrompt() {
-    this.savePatternPromptOpen = true;
-  }
-  closeSavePatternPrompt() {
-    this.savePatternPromptOpen = false;
-  }
-
-  openLoadPatternPrompt() {
-    this.loadPatternPromptOpen = true;
-  }
-  closeLoadPatternPrompt() {
-    this.loadPatternPromptOpen = false;
-  }
-
-  savePattern(name: string) {
-    this.sequencerSvc.savePattern(name);
-    this.closeSavePatternPrompt();
-  }
-
   selectPattern(pattern: Pattern) {
     this.sequencerSvc.selectPattern(pattern);
     // reassign sequencerSvc instrumentButtons to instrumentButtons !!!
     this.instrumentButtons = this.sequencerSvc.instrumentButtons;
-    this.closeLoadPatternPrompt();
-    this.cdr.detectChanges();
-  }
-
-  getPatterns() {
-    return this.sequencerSvc.getPatterns();
   }
 
   ngOnDestroy() {
