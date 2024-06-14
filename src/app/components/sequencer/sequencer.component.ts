@@ -17,6 +17,7 @@ import { NgClass } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SequencerInstrument } from '../../models/instrument/instrument';
 import { BeatButtonComponent } from './beat-button/beat-button.component';
+import { Pattern } from '../../services/pattern-storage.service';
 
 interface Beat {
   id: number;
@@ -50,6 +51,10 @@ export class SequencerComponent implements OnInit, OnDestroy {
   beatMeasureSubscription: Subscription;
 
   currentBeat = 0;
+
+  //   todo: move prompts to sequencer-menu component
+  savePatternPromptOpen = false;
+  loadPatternPromptOpen = false;
 
   // off-click logic cannot be done with off-click directive, because it fires every off-click x number of buttons...
 
@@ -137,6 +142,37 @@ export class SequencerComponent implements OnInit, OnDestroy {
 
   closeAllNotesMenus() {
     this.beatButtons.forEach((button) => button.closeNotesMenu());
+  }
+
+  openSavePatternPrompt() {
+    this.savePatternPromptOpen = true;
+  }
+  closeSavePatternPrompt() {
+    this.savePatternPromptOpen = false;
+  }
+
+  openLoadPatternPrompt() {
+    this.loadPatternPromptOpen = true;
+  }
+  closeLoadPatternPrompt() {
+    this.loadPatternPromptOpen = false;
+  }
+
+  savePattern(name: string) {
+    this.sequencerSvc.savePattern(name);
+    this.closeSavePatternPrompt();
+  }
+
+  selectPattern(pattern: Pattern) {
+    this.sequencerSvc.selectPattern(pattern);
+    // reassign sequencerSvc instrumentButtons to instrumentButtons !!!
+    this.instrumentButtons = this.sequencerSvc.instrumentButtons;
+    this.closeLoadPatternPrompt();
+    this.cdr.detectChanges();
+  }
+
+  getPatterns() {
+    return this.sequencerSvc.getPatterns();
   }
 
   ngOnDestroy() {

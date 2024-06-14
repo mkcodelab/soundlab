@@ -1,15 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as Tone from 'tone';
 import { Time } from 'tone/build/esm/core/type/Units';
 import { SequencerInstrument } from '../models/instrument/instrument';
 import { ButtonNotes } from '../shared/consts';
+import { LocalStorageService } from './local-storage.service';
+import { Pattern, PatternStorageService } from './pattern-storage.service';
 
 export class InstrumentButton {
-  constructor(public id: number) {}
-  isActive = false;
-  private _note = 'C';
-  private octave = 1;
+  constructor(
+    public id: number,
+    public isActive = false,
+    public _note = 'C',
+    public octave = 1
+  ) {}
+  //   isActive = false;
+  //   private _note = 'C';
+  //   private octave = 1;
 
   selectNote(note: ButtonNotes) {
     this._note = note;
@@ -28,6 +35,10 @@ export class InstrumentButton {
   providedIn: 'root',
 })
 export class SequencerService {
+  localStorageSvc = inject(LocalStorageService);
+
+  patternStorageSvc = inject(PatternStorageService);
+
   transport = Tone.getTransport();
 
   constructor() {
@@ -106,6 +117,26 @@ export class SequencerService {
     });
   }
 
+  recreateButtons(pattern: Pattern) {
+    // reset buttons
+    this.instrumentButtons = [];
+    // and then recreate them from pattern data
+    pattern.pattern.forEach((buttonsArray) => {
+      const instrumentBtnArr: InstrumentButton[] = [];
+      buttonsArray.forEach((button) => {
+        instrumentBtnArr.push(
+          new InstrumentButton(
+            button.id,
+            button.isActive,
+            button._note,
+            button.octave
+          )
+        );
+      });
+      this.instrumentButtons.push(instrumentBtnArr);
+    });
+  }
+
   sequencerToggle() {
     this.isPlaying = !this.isPlaying;
     this.isPlaying ? this.start() : this.stop();
@@ -145,5 +176,22 @@ export class SequencerService {
     this.instrumentButtons.forEach((buttonArray) => {
       buttonArray.forEach((btn) => (btn.isActive = false));
     });
+  }
+
+  getInstrumentButtonsData(): string {
+    return JSON.stringify(this.instrumentButtons);
+  }
+
+  savePattern(name: string) {
+    const data = JSON.parse(JSON.stringify(this.instrumentButtons));
+    this.patternStorageSvc.addPattern(name, data);
+  }
+
+  getPatterns() {
+    return this.patternStorageSvc.patterns;
+  }
+
+  selectPattern(pattern: Pattern) {
+    this.recreateButtons(pattern);
   }
 }
