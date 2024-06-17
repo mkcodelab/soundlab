@@ -18,6 +18,8 @@ export class InstrumentComponent {
 
   @Output() instrumentToggleEvent = new EventEmitter();
 
+  @Output() randomizeEvent = new EventEmitter<SequencerInstrument>();
+
   settingsOpen = false;
 
   changeInstrumentVolume(instrument: SequencerInstrument, value: number) {
@@ -57,5 +59,9 @@ export class InstrumentComponent {
     this.instrument.synthType.set({
       envelope: { [param]: value },
     });
+  }
+
+  randomize() {
+    this.randomizeEvent.emit(this.instrument);
   }
 }

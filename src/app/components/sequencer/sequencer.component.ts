@@ -132,6 +132,10 @@ export class SequencerComponent implements OnInit, OnDestroy {
     this.instrumentButtons = this.sequencerSvc.instrumentButtons;
   }
 
+  randomize(event: SequencerInstrument) {
+    this.sequencerSvc.randomize(event);
+  }
+
   ngOnDestroy() {
     this.beatMeasureSubscription.unsubscribe();
   }

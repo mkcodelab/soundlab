@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import * as Tone from 'tone';
 import { Time } from 'tone/build/esm/core/type/Units';
 import { SequencerInstrument } from '../models/instrument/instrument';
-import { ButtonNotes } from '../shared/consts';
+import { ButtonNotes, NOTES } from '../shared/consts';
 import { LocalStorageService } from './local-storage.service';
 import { Pattern, PatternStorageService } from './pattern-storage.service';
 
@@ -112,6 +112,31 @@ export class SequencerService {
       }
       this.instrumentButtons.push(instrumentBtnArr);
     });
+  }
+
+  randomize(event: SequencerInstrument) {
+    const index = event.id;
+    this.instrumentButtons[index].forEach((button) =>
+      this.setButtonValues(button)
+    );
+  }
+
+  randomizeAll() {
+    this.instrumentButtons.forEach((instrument) => {
+      instrument.forEach((button) => this.setButtonValues(button));
+    });
+  }
+
+  setButtonValues(button: InstrumentButton) {
+    button.isActive = Math.random() > 0.5;
+    button._note = this.generateRandomNote();
+    // rand from 6 octaves
+    button.octave = Math.floor(Math.random() * 5 + 1);
+  }
+
+  generateRandomNote() {
+    const notes = NOTES;
+    return notes[Math.floor(Math.random() * notes.length)];
   }
 
   recreateButtons(pattern: Pattern) {

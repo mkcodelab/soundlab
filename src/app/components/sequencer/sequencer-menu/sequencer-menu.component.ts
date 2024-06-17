@@ -64,4 +64,8 @@ export class SequencerMenuComponent {
   getPatterns() {
     return this.sequencerSvc.getPatterns();
   }
+
+  randomizeAll() {
+    this.sequencerSvc.randomizeAll();
+  }
 }

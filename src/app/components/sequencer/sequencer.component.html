@@ -41,7 +41,8 @@
 
             @for(instrument of instruments; track instrument) {
             <instrument [instrument]="instrument"
-                        (instrumentToggleEvent)="instrumentToggle(instrument)"></instrument>
+                        (instrumentToggleEvent)="instrumentToggle(instrument)"
+                        (randomizeEvent)="randomize($event)"></instrument>
 
             }
 
