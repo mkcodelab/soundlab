@@ -23,7 +23,7 @@ export class InstrumentButton {
     this.octave = octave;
   }
 
-  get note() {
+  get fullNote() {
     return this._note + this.octave;
   }
 }
@@ -146,8 +146,12 @@ export class SequencerService {
 
       if (button.isActive) {
         // add note to button
-        if (button.note) {
-          instrument.synthType.triggerAttackRelease(button.note, '8n', time);
+        if (button.fullNote) {
+          instrument.synthType.triggerAttackRelease(
+            button.fullNote,
+            '8n',
+            time
+          );
         } else {
           instrument.synthType.triggerAttackRelease(
             instrument.note,
