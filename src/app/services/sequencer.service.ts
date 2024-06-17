@@ -117,17 +117,17 @@ export class SequencerService {
   randomize(event: SequencerInstrument) {
     const index = event.id;
     this.instrumentButtons[index].forEach((button) =>
-      this.setButtonValues(button)
+      this.randomizeButtonValues(button)
     );
   }
 
   randomizeAll() {
     this.instrumentButtons.forEach((instrument) => {
-      instrument.forEach((button) => this.setButtonValues(button));
+      instrument.forEach((button) => this.randomizeButtonValues(button));
     });
   }
 
-  setButtonValues(button: InstrumentButton) {
+  randomizeButtonValues(button: InstrumentButton) {
     button.isActive = Math.random() > 0.5;
     button._note = this.generateRandomNote();
     // rand from 6 octaves
