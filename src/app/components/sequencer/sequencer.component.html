@@ -40,20 +40,9 @@
             <div class="m-1 p-1 h-10"></div>
 
             @for(instrument of instruments; track instrument) {
-            <!-- move it to instrument-component -->
-            <div class="p-1 m-1 h-10 rounded-lg bg-neutral-200 flex justify-between">
-                <span class="block text-center align-middle font-bold">
-                    {{instrument.name}}
-                </span>
+            <instrument [instrument]="instrument"
+                        (instrumentToggleEvent)="instrumentToggle(instrument)"></instrument>
 
-                <!-- todo: add volume range input (every instrument have it's own gain node) -->
-
-                <!-- mute button -->
-                <button class="w-9 p-1 rounded-lg bg-neutral-400"
-                        title="mute"
-                        (click)="instrumentToggle(instrument)">{{instrument.muted? 'O': 'I'}}</button>
-
-            </div>
             }
 
         </div>
