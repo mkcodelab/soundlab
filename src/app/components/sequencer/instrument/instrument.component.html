@@ -18,7 +18,7 @@
 </div>
 
 <!-- instrument settings menu -->
-<div class="bg-neutral-400 rounded-lg p-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-1/2 h-1/2"
+<div class="bg-neutral-400 rounded-lg p-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-1/2 h-1/2 range-input"
      [hidden]="!settingsOpen">
 
     <div class="flex justify-between">
@@ -28,7 +28,7 @@
 
     </div>
 
-    <div class="range-input">
+    <div>
         <label for="instrumentVolume">Volume</label>
         <input type="range"
                min="0"
@@ -37,4 +37,10 @@
                #instrumentVolume
                (input)="changeInstrumentVolume(instrument, +instrumentVolume.value)">
     </div>
+
+    <!-- if envelope exist -->
+    @if(isEnvelopePresent()) {
+    <envelope (envelopeInputChange)="onEnvelopeInput($event)"
+              [initEnvelopeValues]="getEnvelopeValues()"></envelope>
+    }
 </div>

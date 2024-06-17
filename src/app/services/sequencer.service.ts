@@ -14,9 +14,6 @@ export class InstrumentButton {
     public _note = 'C',
     public octave = 1
   ) {}
-  //   isActive = false;
-  //   private _note = 'C';
-  //   private octave = 1;
 
   selectNote(note: ButtonNotes) {
     this._note = note;
@@ -81,9 +78,9 @@ export class SequencerService {
       new Tone.MembraneSynth({ oscillator: { type: 'sawtooth' } })
     ),
     new SequencerInstrument('Pluck', 3, 'C1', new Tone.PluckSynth()),
-    new SequencerInstrument('Instrument test', 4, 'A4', new Tone.Synth()),
+    new SequencerInstrument('Instrument', 4, 'A4', new Tone.Synth()),
     new SequencerInstrument('highPitch', 5, 'C8', new Tone.Synth()),
-    new SequencerInstrument('lowDrum', 6, 'C1', new Tone.MembraneSynth()),
+    new SequencerInstrument('Drum', 6, 'C1', new Tone.MembraneSynth()),
   ];
 
   masterGain = new Tone.Gain(0.5);
@@ -158,7 +155,6 @@ export class SequencerService {
             time
           );
         }
-        // instrument.synthType.triggerAttackRelease(instrument.note, '8n', time);
       }
     });
 
