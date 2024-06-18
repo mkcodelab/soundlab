@@ -1,7 +1,14 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  TemplateRef,
+  inject,
+} from '@angular/core';
 import { SequencerService } from '../../../services/sequencer.service';
 import { Pattern } from '../../../services/pattern-storage.service';
 import { ButtonNotes, SCALES } from '../../../shared/consts';
+import { ModalConfig, ModalService } from '../../../services/modal.service';
 
 @Component({
   standalone: true,
@@ -12,10 +19,10 @@ import { ButtonNotes, SCALES } from '../../../shared/consts';
 export class SequencerMenuComponent {
   sequencerSvc = inject(SequencerService);
 
+  modalSvc = inject(ModalService);
+
   savePatternPromptOpen = false;
-  loadPatternPromptOpen = false;
   clearAllPromptOpen = false;
-  randomizePromptOpen = false;
 
   scales = SCALES;
 
@@ -50,21 +57,6 @@ export class SequencerMenuComponent {
     this.savePatternPromptOpen = false;
   }
 
-  openLoadPatternPrompt() {
-    this.loadPatternPromptOpen = true;
-  }
-  closeLoadPatternPrompt() {
-    this.loadPatternPromptOpen = false;
-  }
-
-  openRandomizePrompt() {
-    this.randomizePromptOpen = true;
-  }
-
-  closeRandomizePrompt() {
-    this.randomizePromptOpen = false;
-  }
-
   selectScale(scaleName: string) {
     const scaleNotes = SCALES.find((scale) => scale.name === scaleName)?.notes;
     if (scaleNotes) {
@@ -79,7 +71,7 @@ export class SequencerMenuComponent {
 
   selectPattern(pattern: Pattern) {
     this.selectPatternEvent.emit(pattern);
-    this.closeLoadPatternPrompt();
+    this.closeModal();
   }
 
   getPatterns() {
@@ -87,7 +79,15 @@ export class SequencerMenuComponent {
   }
 
   randomizeAll() {
-    this.closeRandomizePrompt();
+    this.closeModal();
     this.sequencerSvc.randomizeAll(this.selectedScale);
+  }
+
+  openModal(template: TemplateRef<any>, config: ModalConfig) {
+    this.modalSvc.open(template, config);
+  }
+
+  closeModal() {
+    this.modalSvc.close();
   }
 }
