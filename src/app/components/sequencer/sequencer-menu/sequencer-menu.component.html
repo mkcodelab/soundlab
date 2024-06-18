@@ -38,7 +38,12 @@
             (click)="openLoadPatternPrompt()">Load</button>
 
     <button class="bg-neutral-200 p-2 m-2 rounded-lg"
-            (click)="randomizeAll()">Randomize</button>
+            (click)="openRandomizePrompt()">
+        Randomize
+    </button>
+
+    <!-- <button class="bg-neutral-200 p-2 m-2 rounded-lg"
+            (click)="randomizeAll()">Randomize</button> -->
 
     @if(loadPatternPromptOpen) {
     <div
@@ -55,6 +60,30 @@
         <button class="bg-neutral-600 p-2 rounded-lg m-1"
                 (click)="selectPattern(pattern)">{{pattern.name}}</button>
         }
+
+    </div>
+    }
+
+    @if(randomizePromptOpen) {
+    <div
+         class="bg-neutral-400 rounded-lg p-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-1/2 h-1/2">
+        <div class="flex justify-between">
+            <p class="text-2xl text-white">Randomize Pattern</p>
+            <button class="bg-neutral-600 hover:bg-red-500 w-10 h-10 rounded-lg text-white text-center"
+                    (click)="closeRandomizePrompt()">X</button>
+        </div>
+
+        <select name="scaleSelect"
+                #scaleSelect
+                (change)="selectScale(scaleSelect.value)">
+            @for(scale of scales; track scale){
+            <!-- <option [value]="scale.notes">{{scale.name}}</option> -->
+            <option [value]="scale.name">{{scale.name}}</option>
+            }
+        </select>
+
+        <button class="bg-neutral-200 p-2 m-2 rounded-lg"
+                (click)="randomizeAll()">Randomize</button>
 
     </div>
     }

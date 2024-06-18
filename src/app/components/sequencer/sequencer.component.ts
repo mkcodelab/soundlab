@@ -19,6 +19,7 @@ import { BeatButtonComponent } from './beat-button/beat-button.component';
 import { Pattern } from '../../services/pattern-storage.service';
 import { SequencerMenuComponent } from './sequencer-menu/sequencer-menu.component';
 import { InstrumentComponent } from './instrument/instrument.component';
+import { ButtonNotes } from '../../shared/consts';
 
 interface Beat {
   id: number;
@@ -133,6 +134,8 @@ export class SequencerComponent implements OnInit, OnDestroy {
   }
 
   randomize(event: SequencerInstrument) {
+    // const scale: ButtonNotes[] = ['D', 'A', 'E'];
+    // this.sequencerSvc.randomize(event, scale);
     this.sequencerSvc.randomize(event);
   }
 

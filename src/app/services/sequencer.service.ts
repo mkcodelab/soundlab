@@ -114,29 +114,34 @@ export class SequencerService {
     });
   }
 
-  randomize(event: SequencerInstrument) {
+  randomize(event: SequencerInstrument, scale?: ButtonNotes[]) {
     const index = event.id;
     this.instrumentButtons[index].forEach((button) =>
-      this.randomizeButtonValues(button)
+      this.randomizeButtonValues(button, scale)
     );
   }
 
-  randomizeAll() {
+  randomizeAll(scale?: ButtonNotes[]) {
     this.instrumentButtons.forEach((instrument) => {
-      instrument.forEach((button) => this.randomizeButtonValues(button));
+      instrument.forEach((button) => this.randomizeButtonValues(button, scale));
     });
   }
 
-  randomizeButtonValues(button: InstrumentButton) {
+  randomizeButtonValues(button: InstrumentButton, scale?: ButtonNotes[]) {
     button.isActive = Math.random() > 0.5;
-    button._note = this.generateRandomNote();
+    button._note = this.generateRandomNote(scale);
     // rand from 6 octaves
-    button.octave = Math.floor(Math.random() * 5 + 1);
+    button.octave = Math.floor(Math.random() * 6 + 1);
   }
 
-  generateRandomNote() {
-    const notes = NOTES;
-    return notes[Math.floor(Math.random() * notes.length)];
+  //  randomization based on scales i.e. D Minor D Phrygian etc. from SCALES constant
+  //  pass scale for specific notes
+  generateRandomNote(scale?: ButtonNotes[]) {
+    if (scale) {
+      return scale[Math.floor(Math.random() * scale.length)];
+    } else {
+      return NOTES[Math.floor(Math.random() * NOTES.length)];
+    }
   }
 
   recreateButtons(pattern: Pattern) {
