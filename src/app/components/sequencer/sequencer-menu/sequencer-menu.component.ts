@@ -9,12 +9,18 @@ import { SequencerService } from '../../../services/sequencer.service';
 import { Pattern } from '../../../services/pattern-storage.service';
 import { ButtonNotes, SCALES } from '../../../shared/consts';
 import { ModalConfig, ModalService } from '../../../services/modal.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'sequencer-menu',
   templateUrl: './sequencer-menu.component.html',
-  imports: [],
+  imports: [NgClass],
+  styles: `
+    .select-error {
+        background: red;
+    }
+  `,
 })
 export class SequencerMenuComponent {
   sequencerSvc = inject(SequencerService);
@@ -27,6 +33,8 @@ export class SequencerMenuComponent {
   scales = SCALES;
 
   selectedScale: ButtonNotes[] = [];
+
+  scaleSelectError = false;
 
   @Output() selectPatternEvent = new EventEmitter<Pattern>();
 
@@ -76,6 +84,15 @@ export class SequencerMenuComponent {
 
   getPatterns() {
     return this.sequencerSvc.getPatterns();
+  }
+
+  onRandomizeClick(scaleName: string) {
+    // simple validation
+    if (scaleName) {
+      this.randomizeAll();
+    } else {
+      this.scaleSelectError = true;
+    }
   }
 
   randomizeAll() {

@@ -16,16 +16,12 @@ import { ModalService } from '../../services/modal.service';
   imports: [],
   standalone: true,
 })
-export class ModalComponent implements OnInit, AfterViewInit {
+export class ModalComponent implements AfterViewInit {
   modalSvc = inject(ModalService);
   cdr = inject(ChangeDetectorRef);
 
   @ViewChild('modalContent', { read: ViewContainerRef })
   modalContent: ViewContainerRef;
-
-  ngOnInit() {
-    console.log(this.template);
-  }
 
   ngAfterViewInit() {
     this.modalContent.createEmbeddedView(this.template);
