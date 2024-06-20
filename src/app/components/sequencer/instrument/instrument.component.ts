@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  inject,
+} from '@angular/core';
 import { SequencerInstrument } from '../../../models/instrument/instrument';
 import {
   EnvelopeComponent,
@@ -6,14 +13,18 @@ import {
 } from '../../synth-view/fx-board/envelope/envelope.component';
 import { EnvelopeValues } from '../../synth-view/fx-board/fx-board.component';
 import { EnvelopeParams } from '../../../services/synth.service';
+import { NgClass } from '@angular/common';
+import { ModalConfig, ModalService } from '../../../services/modal.service';
 
 @Component({
   standalone: true,
   selector: 'instrument',
   templateUrl: './instrument.component.html',
-  imports: [EnvelopeComponent],
+  imports: [EnvelopeComponent, NgClass],
 })
 export class InstrumentComponent {
+  modalSvc = inject(ModalService);
+
   @Input({ required: true }) instrument: SequencerInstrument;
 
   @Output() instrumentToggleEvent = new EventEmitter();
@@ -63,5 +74,9 @@ export class InstrumentComponent {
 
   randomize() {
     this.randomizeEvent.emit(this.instrument);
+  }
+
+  openModal(template: TemplateRef<any>, config: ModalConfig) {
+    this.modalSvc.open(template, config);
   }
 }
