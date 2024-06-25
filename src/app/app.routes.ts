@@ -6,10 +6,12 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 export const routes: Routes = [
   {
     path: 'synth',
+    title: 'Soundlab Synthesizer',
     component: SynthViewComponent,
   },
   {
     path: 'sequencer',
+    title: 'Soundlab Sequencer',
     component: SequencerComponent,
   },
   {

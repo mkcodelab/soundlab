@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  OnInit,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -15,6 +14,20 @@ import { ModalService } from '../../services/modal.service';
   templateUrl: './modal.component.html',
   imports: [],
   standalone: true,
+  styles: `
+
+    @keyframes modal-appear {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    .modal-animation {
+        animation: modal-appear 0.3s ease;
+    }
+  `,
 })
 export class ModalComponent implements AfterViewInit {
   modalSvc = inject(ModalService);
