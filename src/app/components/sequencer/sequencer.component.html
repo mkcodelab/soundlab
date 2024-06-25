@@ -52,8 +52,8 @@
             <!-- beats measure -->
             <div class="flex justify-center">
                 @for(beat of beats; track beat) {
-                <div class="p-1 m-1 w-10 h-10 rounded-lg text-center"
-                     [ngClass]="isCurrentBeatActive(beat)? 'measure-active' : 'bg-neutral-200'">
+                <div class="p-1 m-1 w-10 h-10 rounded-lg text-center text-white"
+                     [ngClass]="isCurrentBeatActive(beat)? 'measure-active' : 'measure-inactive'">
                     <span class="font-bold align-middle">{{beat.id}}</span>
                 </div>
                 }

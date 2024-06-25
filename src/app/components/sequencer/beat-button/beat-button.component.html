@@ -2,7 +2,7 @@
 
     <button class="p-1 m-1 w-10 h-10 rounded-lg text-center beat-button"
             title="click to toggle, right-click to open note selection menu"
-            [ngClass]="instrumentButton.isActive? 'instrument-btn-active' : 'bg-neutral-200'"
+            [ngClass]="instrumentButton.isActive? 'instrument-btn-active' : 'instrument-btn-inactive'"
             (click)="toggle()">
         @if(instrumentButton.isActive) {
         <span class="text-white font-bold">{{instrumentButton.fullNote}}</span>
@@ -11,12 +11,10 @@
 
     <!-- elements inside needs to have notes-menu-elem class due to offClick logic -->
 
-    <!-- todo: animation on opening menu -->
-    <!-- note-menu-hidden -->
-    <!-- [class.note-menu-show]="notesMenuOpen" -->
-
+    <!-- .animation-appear makes weird z-index issues -->
     <div class="absolute top-1/2 left-1/2"
-         [hidden]="!notesMenuOpen">
+         [hidden]="
+         !notesMenuOpen">
 
         <radial-menu [radius]='100'
                      [innerRadius]="50"

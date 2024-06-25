@@ -19,7 +19,6 @@ import { BeatButtonComponent } from './beat-button/beat-button.component';
 import { Pattern } from '../../services/pattern-storage.service';
 import { SequencerMenuComponent } from './sequencer-menu/sequencer-menu.component';
 import { InstrumentComponent } from './instrument/instrument.component';
-import { ButtonNotes } from '../../shared/consts';
 
 interface Beat {
   id: number;
@@ -36,9 +35,15 @@ interface Beat {
     InstrumentComponent,
   ],
   styles: `
+    $measure-color: hsl(60, 100%, 85%);
+
     .measure-active {
-        background: hsl(60, 100%, 85%);
+        background: $measure-color;
         box-shadow: 0 0 10px 5px hsl(60, 100%, 50%);
+    }
+
+    .measure-inactive {
+        border: 2px solid $measure-color;
     }
   `,
 })

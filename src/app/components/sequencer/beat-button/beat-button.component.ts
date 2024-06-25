@@ -22,15 +22,14 @@ import { RadialMenuComponent } from '../../radial-menu/radial-menu.component';
         box-shadow: 0 0 10px 5px hsl(120, 100%, 50%);
     }
 
-    // todo: opacity animation on opening menu
-    .note-menu-hidden {
-        opacity: 0;
-        transition: opacity .2s ease;
+    .instrument-btn-inactive {
+        border: 2px solid hsl(120, 100%, 85%);
+        background: transparent;
+        transition: box-shadow 0.3s ease;
 
-    }
-
-    .note-menu-show {
-        opacity: 1;
+        &:hover {
+            box-shadow: 0 0 10px 5px hsl(120, 100%, 50%);
+        }
     }
   `,
 })
