@@ -26,6 +26,11 @@ export class PatternStorageService {
     this.savePatterns();
   }
 
+  deletePattern(pattern: Pattern) {
+    this._patterns = this._patterns.filter((el) => el.name !== pattern.name);
+    this.savePatterns();
+  }
+
   get patterns() {
     return this._patterns;
   }

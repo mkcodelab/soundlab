@@ -76,10 +76,14 @@ export class SequencerMenuComponent {
     this.sequencerSvc.savePattern(name);
     this.closeSavePatternPrompt();
   }
-
+  // move to LoadPatternComponent
   selectPattern(pattern: Pattern) {
     this.selectPatternEvent.emit(pattern);
     this.closeModal();
+  }
+
+  deletePattern(pattern: Pattern) {
+    this.sequencerSvc.deletePattern(pattern);
   }
 
   getPatterns() {

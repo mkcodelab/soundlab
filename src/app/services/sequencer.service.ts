@@ -224,4 +224,8 @@ export class SequencerService {
   selectPattern(pattern: Pattern) {
     this.recreateButtons(pattern);
   }
+
+  deletePattern(pattern: Pattern) {
+    this.patternStorageSvc.deletePattern(pattern);
+  }
 }
