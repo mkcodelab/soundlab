@@ -1,22 +1,49 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import * as Tone from 'tone';
 import { Time } from 'tone/build/esm/core/type/Units';
+import { SequencerInstrument } from '../models/instrument/instrument';
+import { ButtonNotes, NOTES } from '../shared/consts';
+import { LocalStorageService } from './local-storage.service';
+import { Pattern, PatternStorageService } from './pattern-storage.service';
 
-export class BeatButton {
-  constructor(public id: number) {}
-  isActive = false;
+export class InstrumentButton {
+  constructor(
+    public id: number,
+    public isActive = false,
+    public _note = 'C',
+    public octave = 1
+  ) {}
+
+  selectNote(note: ButtonNotes) {
+    this._note = note;
+  }
+
+  selectOctave(octave: number) {
+    this.octave = octave;
+  }
+
+  get fullNote() {
+    return this._note + this.octave;
+  }
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class SequencerService {
+  localStorageSvc = inject(LocalStorageService);
+
+  patternStorageSvc = inject(PatternStorageService);
+
   transport = Tone.getTransport();
 
   constructor() {
-    this.synths.forEach((synth) => synth.connect(this.gain));
+    this.instruments.forEach((instrument) =>
+      instrument.connect(this.masterGain)
+    );
 
-    this.gain.toDestination();
+    this.masterGain.toDestination();
     this.initButtons();
     this.setBpm(120);
     this.transport.scheduleRepeat((time) => {
@@ -26,21 +53,37 @@ export class SequencerService {
 
   numberOfBeats = 16;
 
-  currentBeat = 0;
+  private currentBeat = 0;
+  private currentBeat$: BehaviorSubject<number> = new BehaviorSubject(0);
+
+  currentBeatMeasure: Observable<number> = this.currentBeat$.asObservable();
 
   isPlaying = false;
 
-  instrumentButtons: BeatButton[][] = [];
+  instrumentButtons: InstrumentButton[][] = [];
 
   //   change synths for some samples
-  synths = [
-    new Tone.Synth({ oscillator: { type: 'square' } }),
-    new Tone.MetalSynth(),
-    new Tone.MembraneSynth({ oscillator: { type: 'sawtooth' } }),
-    new Tone.PluckSynth(),
+  instruments = [
+    new SequencerInstrument(
+      'SquareOsc',
+      0,
+      'C4',
+      new Tone.Synth({ oscillator: { type: 'square' } })
+    ),
+    new SequencerInstrument('Crash', 1, 'C1', new Tone.MetalSynth()),
+    new SequencerInstrument(
+      'Membrane',
+      2,
+      'C1',
+      new Tone.MembraneSynth({ oscillator: { type: 'sawtooth' } })
+    ),
+    new SequencerInstrument('Pluck', 3, 'C1', new Tone.PluckSynth()),
+    new SequencerInstrument('Instrument', 4, 'A4', new Tone.Synth()),
+    new SequencerInstrument('highPitch', 5, 'C8', new Tone.Synth()),
+    new SequencerInstrument('Drum', 6, 'C1', new Tone.MembraneSynth()),
   ];
 
-  gain = new Tone.Gain(0.5);
+  masterGain = new Tone.Gain(0.5);
 
   start() {
     this.transport.start();
@@ -57,17 +100,67 @@ export class SequencerService {
     return this.transport.bpm.value;
   }
 
-  toggleActiveBeat(beatBtn: BeatButton) {
-    beatBtn.isActive = !beatBtn.isActive;
+  toggleActiveBeat(instrumentBtn: InstrumentButton) {
+    instrumentBtn.isActive = !instrumentBtn.isActive;
   }
 
   initButtons() {
-    this.synths.forEach(() => {
-      const beatButtonArr = [];
+    this.instruments.forEach(() => {
+      const instrumentBtnArr = [];
       for (let i = 0; i < this.numberOfBeats; i++) {
-        beatButtonArr.push(new BeatButton(i));
+        instrumentBtnArr.push(new InstrumentButton(i));
       }
-      this.instrumentButtons.push(beatButtonArr);
+      this.instrumentButtons.push(instrumentBtnArr);
+    });
+  }
+
+  randomize(event: SequencerInstrument, scale?: ButtonNotes[]) {
+    const index = event.id;
+    this.instrumentButtons[index].forEach((button) =>
+      this.randomizeButtonValues(button, scale)
+    );
+  }
+
+  randomizeAll(scale?: ButtonNotes[]) {
+    this.instrumentButtons.forEach((instrument) => {
+      instrument.forEach((button) => this.randomizeButtonValues(button, scale));
+    });
+  }
+
+  randomizeButtonValues(button: InstrumentButton, scale?: ButtonNotes[]) {
+    button.isActive = Math.random() > 0.5;
+    button._note = this.generateRandomNote(scale);
+    // rand from 6 octaves
+    button.octave = Math.floor(Math.random() * 6 + 1);
+  }
+
+  //  randomization based on scales i.e. D Minor D Phrygian etc. from SCALES constant
+  //  pass scale for specific notes
+  generateRandomNote(scale?: ButtonNotes[]) {
+    if (scale) {
+      return scale[Math.floor(Math.random() * scale.length)];
+    } else {
+      return NOTES[Math.floor(Math.random() * NOTES.length)];
+    }
+  }
+
+  recreateButtons(pattern: Pattern) {
+    // reset buttons
+    this.instrumentButtons = [];
+    // and then recreate them from pattern data
+    pattern.pattern.forEach((buttonsArray) => {
+      const instrumentBtnArr: InstrumentButton[] = [];
+      buttonsArray.forEach((button) => {
+        instrumentBtnArr.push(
+          new InstrumentButton(
+            button.id,
+            button.isActive,
+            button._note,
+            button.octave
+          )
+        );
+      });
+      this.instrumentButtons.push(instrumentBtnArr);
     });
   }
 
@@ -77,26 +170,62 @@ export class SequencerService {
   }
   repeat(time: Time) {
     this.instrumentButtons.forEach((row, index) => {
-      let synth = this.synths[index];
+      let instrument = this.instruments[index];
 
       let button = row[this.currentBeat];
 
       if (button.isActive) {
-        // synth.triggerAttackRelease(note.note, '8n', time)
-        synth.triggerAttackRelease('D4', '8n', time);
+        // add note to button
+        if (button.fullNote) {
+          instrument.synthType.triggerAttackRelease(
+            button.fullNote,
+            '8n',
+            time
+          );
+        } else {
+          instrument.synthType.triggerAttackRelease(
+            instrument.note,
+            '8n',
+            time
+          );
+        }
       }
     });
 
+    // send current beat
+    this.currentBeat$.next(this.currentBeat);
+    // update current beat
     this.currentBeat = (this.currentBeat + 1) % this.numberOfBeats;
   }
 
   changeGain(gainValue: number) {
-    this.gain.gain.value = gainValue;
+    this.masterGain.gain.value = gainValue;
   }
 
   clearAll() {
     this.instrumentButtons.forEach((buttonArray) => {
       buttonArray.forEach((btn) => (btn.isActive = false));
     });
+  }
+
+  getInstrumentButtonsData(): string {
+    return JSON.stringify(this.instrumentButtons);
+  }
+
+  savePattern(name: string) {
+    const data = JSON.parse(JSON.stringify(this.instrumentButtons));
+    this.patternStorageSvc.addPattern(name, data);
+  }
+
+  getPatterns() {
+    return this.patternStorageSvc.patterns;
+  }
+
+  selectPattern(pattern: Pattern) {
+    this.recreateButtons(pattern);
+  }
+
+  deletePattern(pattern: Pattern) {
+    this.patternStorageSvc.deletePattern(pattern);
   }
 }

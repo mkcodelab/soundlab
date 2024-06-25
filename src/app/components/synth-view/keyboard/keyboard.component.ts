@@ -8,6 +8,7 @@ import {
 import { SynthService } from '../../../services/synth.service';
 import { BehaviorSubject } from 'rxjs';
 import { NgClass, NgStyle } from '@angular/common';
+import { NOTES } from '../../../shared/consts';
 
 @Component({
   standalone: true,
@@ -37,7 +38,7 @@ export class KeyboardComponent {
   keys: string[] = [];
 
   keysPressed: string[] = [];
-  notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  notes = NOTES;
 
   notesPressed: string[] = [];
 

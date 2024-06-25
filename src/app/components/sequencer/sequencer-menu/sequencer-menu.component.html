@@ -1,0 +1,101 @@
+<div class="flex m-2">
+    <button class="bg-neutral-700 hover:bg-neutral-600 p-2 m-2 rounded-lg"
+            title="Play / Pause"
+            (click)="sequencerToggle()">
+
+        <i [ngClass]="isPlaying? 'icon-pause' : 'icon-play'"></i>
+    </button>
+
+    <div class="flex">
+        <button class="bg-neutral-700 hover:bg-neutral-600 p-2 m-2 rounded-lg"
+                title="Clear All"
+                (click)="openClearAllPrompt()"><i class="icon-clear"></i></button>
+
+        @if(clearAllPromptOpen) {
+        <div class="bg-neutral-400 rounded-lg pr-2 pl-2">
+            <span class="text-white">Are you sure?</span>
+            <button class="bg-neutral-200 p-2 m-1 rounded-lg"
+                    (click)="closeClearAllPrompt()">No</button>
+            <button class="bg-neutral-200 p-2 m-1 rounded-lg"
+                    (click)="clearAll()">Yes</button>
+        </div>
+
+        }
+    </div>
+    <!-- save -->
+    <button class="bg-neutral-700 hover:bg-neutral-600 p-2 m-2 rounded-lg"
+            title="Save Pattern"
+            (click)="openSavePatternPrompt()"><i class="icon-save"></i></button>
+
+    @if(savePatternPromptOpen) {
+    <div class="bg-neutral-400 rounded-lg pr-2 pl-2">
+        <input type="text"
+               placeholder="pattern name"
+               #patternName>
+        <button class="bg-neutral-200 p-2 m-2 rounded-lg"
+                (click)="savePattern(patternName.value)">save</button>
+        <button class="bg-neutral-200 p-2 m-2 rounded-lg"
+                (click)="closeSavePatternPrompt()">cancel</button>
+    </div>
+    }
+    <!-- Load -->
+    <button class="bg-neutral-700 hover:bg-neutral-600 p-2 m-2 rounded-lg"
+            title="Load Pattern"
+            (click)="openModal(loadPatternPrompt, {title: 'Load Pattern'})">
+        <i class="icon-load"></i>
+    </button>
+    <!-- random -->
+    <button class="bg-neutral-700 hover:bg-neutral-600 p-2 m-2 rounded-lg"
+            title="Randomize Pattern"
+            (click)="openModal(randomizePatternPrompt, {title: 'Randomize Pattern'})">
+        <i class="icon-random"></i>
+    </button>
+</div>
+
+
+
+<ng-template #loadPatternPrompt>
+    <div class="flex flex-wrap">
+
+        @for(pattern of getPatterns(); track pattern) {
+        <div class="bg-neutral-700 flex justify-center align-middle m-1 p-1 rounded-lg">
+            <button class="bg-neutral-200 hover:bg-green-500 p-2 rounded-lg m-1"
+                    (click)="selectPattern(pattern)">{{pattern.name}}</button>
+            <button (click)="deletePattern(pattern)"
+                    title="delete pattern"><i class="icon-trash"></i></button>
+        </div>
+        }
+    </div>
+</ng-template>
+
+<ng-template #randomizePatternPrompt>
+    <!-- todo: -->
+    <!-- add select root note -->
+    <!-- add select scale mode -->
+    <div class="flex flex-col justify-between rand-pattern-prompt h-full">
+        <div>
+
+            <select class="p-2 m-2"
+                    name="scaleSelect"
+                    (click)="scaleSelectError = false"
+                    [ngClass]="{'select-error' : scaleSelectError}"
+                    #scaleSelect
+                    (change)="selectScale(scaleSelect.value)">
+                <option value="">Select Scale</option>
+                @for(scale of scales; track scale){
+                <option [value]="scale.name">{{scale.name}}</option>
+                }
+            </select>
+            @if(scaleSelectError) {
+            <p class="text-red-500 font-bold">Please select scale</p>
+            }
+        </div>
+
+        <div class="flex justify-center">
+
+            <button class="bg-neutral-200 p-2 m-2 rounded-lg hover:bg-green-500"
+                    (click)="onRandomizeClick(scaleSelect.value)">Randomize</button>
+        </div>
+
+    </div>
+</ng-template>

@@ -12,6 +12,13 @@ body {
   border-color: #ccc;
 }
 
+@mixin icon {
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-position: center;
+}
+
 .range-input {
   input[type="range"] {
     appearance: none;
@@ -37,5 +44,28 @@ body {
         hsl(0, 0%, 80%)
       );
     }
+  }
+}
+// icons from https://feathericons.com/
+// className : filename
+$icons: (
+  "save": "upload",
+  "load": "download",
+  "play": "play",
+  "pause": "pause",
+  "random": "shuffle",
+  "clear": "x",
+  "sliders": "sliders",
+  "settings": "settings",
+  "volume": "volume",
+  "volume-x": "volume-x",
+  "volume-2": "volume-2",
+  "trash": "trash-2",
+);
+
+@each $className, $filename in $icons {
+  .icon-#{$className} {
+    @include icon;
+    background-image: url("./assets/#{$filename}.svg");
   }
 }
