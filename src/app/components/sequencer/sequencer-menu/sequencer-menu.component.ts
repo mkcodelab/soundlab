@@ -36,6 +36,8 @@ export class SequencerMenuComponent {
 
   scaleSelectError = false;
 
+  noPatternNameError = false;
+
   @Output() selectPatternEvent = new EventEmitter<Pattern>();
 
   clearAll() {
@@ -63,6 +65,7 @@ export class SequencerMenuComponent {
   }
   closeSavePatternPrompt() {
     this.savePatternPromptOpen = false;
+    this.noPatternNameError = false;
   }
 
   selectScale(scaleName: string) {
@@ -73,8 +76,12 @@ export class SequencerMenuComponent {
   }
 
   savePattern(name: string) {
-    this.sequencerSvc.savePattern(name);
-    this.closeSavePatternPrompt();
+    if (name) {
+      this.sequencerSvc.savePattern(name);
+      this.closeSavePatternPrompt();
+    } else {
+      this.noPatternNameError = true;
+    }
   }
   // move to LoadPatternComponent
   selectPattern(pattern: Pattern) {

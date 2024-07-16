@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  OnInit,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
